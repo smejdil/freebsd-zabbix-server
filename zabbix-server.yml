@@ -91,6 +91,22 @@
     ansible.builtin.service:
       name: mysql-server
       state: started
+
+  - name: Set root user password
+    # If .my.cnf already exists, this will cause an mysql-root-password update.
+    community.mysql
+      mysql_user:
+      name: root
+      password: "{{ mysql_root_password}}"
+      check_implicit_admin: true
+    
+  - name: Create .my.cnf
+    ansible.builtin.template:
+      src: "./templates/client.my.cnf.j2"
+      dest: "/root/.my.cnf"
+      owner: root
+      group: root
+      mode: 0600
       
   - name: Start service zabbix5-server, if not started
     ansible.builtin.service:

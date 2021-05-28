@@ -4,5 +4,6 @@
 server_url: http://localhost/zabbix/
 zabbix_server: locahost
 snmp_community: {$SNMP_COMMUNITY}
+mysql_root_password: FreeBSD13_MySQL57
 
 # EOF
