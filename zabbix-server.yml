@@ -132,28 +132,28 @@
   - name: Import zabbix schema.sql
     community.mysql.mysql_db:
       state: import
-      name: all
+      name: zabbix
       encoding: utf8
       target: /usr/local/share/zabbix5/server/database/mysql/schema.sql
 
   - name: Import zabbix images.sql
     community.mysql.mysql_db:
       state: import
-      name: all
+      name: zabbix
       encoding: utf8
       target: /usr/local/share/zabbix5/server/database/mysql/images.sql
 
   - name: Import zabbix data.sql
     community.mysql.mysql_db:
       state: import
-      name: all
+      name: zabbix
       encoding: utf8
       target: /usr/local/share/zabbix5/server/database/mysql/data.sql
 
   - name: Import zabbix double.sql
     community.mysql.mysql_db:
       state: import
-      name: all
+      name: zabbix
       encoding: utf8
       target: /usr/local/share/zabbix5/server/database/mysql/double.sql
 
