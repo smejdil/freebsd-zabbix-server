@@ -97,14 +97,14 @@
       name: mysql-server
       state: started
 
-  - name: Change  mysql_native_password
-    shell: mysql --connect-expired-password -u root -p`cat /root/.mysql_secret | grep -v Password` -e "ALTER USER root@localhost IDENTIFIED BY '{{ mysql_root_password}}';"
+  - name: Change mysql_native_password for root
+    shell: mysql --connect-expired-password -u root -p`cat /root/.mysql_secret | grep -v Password` -e "ALTER USER root@localhost IDENTIFIED BY '{{ mysql_root_password }}';"
 
 #  - name: Set root user password
 #    # If .my.cnf already exists, this will cause an mysql-root-password update.
 #    community.mysql.mysql_user:
 #      name: root
-#      password: "{{ mysql_root_password}}"
+#      password: "{{ mysql_root_password }}"
 #      check_implicit_admin: true
     
   - name: Create .my.cnf
@@ -114,7 +114,49 @@
       owner: root
       group: wheel
       mode: 0600
-      
+
+  - name: Create a new database with name 'zabbix'
+    community.mysql.mysql_db:
+      name: zabbix
+      state: present
+
+  - name: Create database user with name 'zabbix' and password '{{ mysql_zabbix_password }}' with all database privileges
+    community.mysql.mysql_user:
+      name: zabbix
+      password: {{ mysql_zabbix_password }}
+      priv: '*.*:zabbix'
+      collation: utf8_bin
+      encoding: utf8
+      state: present
+
+  - name: Import zabbix schema.sql
+    community.mysql.mysql_db:
+      state: import
+      name: all
+      encoding: utf8
+      target: /usr/local/share/zabbix5/server/database/mysql/schema.sql
+
+  - name: Import zabbix images.sql
+    community.mysql.mysql_db:
+      state: import
+      name: all
+      encoding: utf8
+      target: /usr/local/share/zabbix5/server/database/mysql/images.sql
+
+  - name: Import zabbix data.sql
+    community.mysql.mysql_db:
+      state: import
+      name: all
+      encoding: utf8
+      target: /usr/local/share/zabbix5/server/database/mysql/data.sql
+
+  - name: Import zabbix double.sql
+    community.mysql.mysql_db:
+      state: import
+      name: all
+      encoding: utf8
+      target: /usr/local/share/zabbix5/server/database/mysql/double.sql
+
   - name: Start service zabbix5-server, if not started
     ansible.builtin.service:
       name: zabbix_server
