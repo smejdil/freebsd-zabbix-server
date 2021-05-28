@@ -31,6 +31,11 @@
       name: mod_php74
       state: present
 
+  - name: Install package mysql57-server
+    community.general.pkgng:
+      name: mysql57-server
+      state: present
+
   - name: Enable service zabbix_agentd, and not touch the state
     ansible.builtin.service:
       name: zabbix_agentd
@@ -44,6 +49,11 @@
   - name: Enable service apache24, and not touch the state
     ansible.builtin.service:
       name: apache24
+      enabled: yes
+
+  - name: Enable service mysql, and not touch the state
+    ansible.builtin.service:
+      name: mysql
       enabled: yes
 
   - name: Copy sample zabbix_agentd.conf
