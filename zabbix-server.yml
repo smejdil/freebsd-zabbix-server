@@ -97,12 +97,15 @@
       name: mysql-server
       state: started
 
-  - name: Set root user password
-    # If .my.cnf already exists, this will cause an mysql-root-password update.
-    community.mysql.mysql_user:
-      name: root
-      password: "{{ mysql_root_password}}"
-      check_implicit_admin: true
+  - name: Change  mysql_native_password
+    shell: mysql --connect-expired-password -u root -p`cat /root/.mysql_secret | grep -v Password` -e "ALTER USER root@localhost IDENTIFIED BY '{{ mysql_root_password}}';"
+
+#  - name: Set root user password
+#    # If .my.cnf already exists, this will cause an mysql-root-password update.
+#    community.mysql.mysql_user:
+#      name: root
+#      password: "{{ mysql_root_password}}"
+#      check_implicit_admin: true
     
   - name: Create .my.cnf
     ansible.builtin.template:
