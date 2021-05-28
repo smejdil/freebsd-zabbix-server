@@ -157,6 +157,12 @@
       encoding: utf8
       target: /usr/local/share/zabbix5/server/database/mysql/double.sql
 
+  - name: Edit zabbix server DBPassword
+    ansible.builtin.lineinfile:
+      path: /usr/local/etc/zabbix5/zabbix_server.conf
+      regexp: ^# DBPassword=.*
+      line: DBPassword={{ mysql_zabbix_password }}
+
   - name: Start service zabbix5-server, if not started
     ansible.builtin.service:
       name: zabbix_server
