@@ -124,9 +124,9 @@
 
   - name: Create database user with name 'zabbix' and password with all database privileges
     community.mysql.mysql_user:
-      name: zabbix@localhost
+      name: 'zabbix'@'localhost'
       password: "{{ mysql_zabbix_password }}"
-      priv: '*.*:ALL'
+      priv: 'zabbix.*': 'ALL,GRANT'
       state: present
 
   - name: Import zabbix schema.sql
