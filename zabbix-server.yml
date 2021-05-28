@@ -112,7 +112,7 @@
       src: "./templates/client.my.cnf.j2"
       dest: "/root/.my.cnf"
       owner: root
-      group: root
+      group: wheel
       mode: 0600
       
   - name: Start service zabbix5-server, if not started
