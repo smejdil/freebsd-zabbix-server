@@ -118,6 +118,8 @@
   - name: Create a new database with name 'zabbix'
     community.mysql.mysql_db:
       name: zabbix
+      collation: utf8_bin
+      encoding: utf8
       state: present
 
   - name: Create database user with name 'zabbix' and password with all database privileges
@@ -125,8 +127,6 @@
       name: zabbix
       password: "{{ mysql_zabbix_password }}"
       priv: '*.*:zabbix'
-      collation: utf8_bin
-      encoding: utf8
       state: present
 
   - name: Import zabbix schema.sql
