@@ -1,7 +1,7 @@
 ## FreeBSD Zabbix Server
 
 This small project is used for install zabbix5_agent, zabbix5_frontend and
-zabbix5_server with mysql57-server on OS FreeBSD 13.
+zabbix5_server with mysql80-server on OS FreeBSD 13.
 
 ## Dependencies
 

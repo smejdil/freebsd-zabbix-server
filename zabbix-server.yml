@@ -6,6 +6,11 @@
     - vars/vars.yml
 
   tasks:
+  - name: Install package mysql80-server
+    community.general.pkgng:
+      name: mysql80-server
+      state: present
+
   - name: Install package zabbix5-agent
     community.general.pkgng:
       name: zabbix5-agent
@@ -31,9 +36,9 @@
       name: mod_php74
       state: present
 
-  - name: Install package mysql57-server
+  - name: Install package py37-mysqlclient
     community.general.pkgng:
-      name: mysql57-server
+      name: py37-mysqlclient
       state: present
 
   - name: Enable service zabbix_agentd, and not touch the state
@@ -94,8 +99,7 @@
 
   - name: Set root user password
     # If .my.cnf already exists, this will cause an mysql-root-password update.
-    community.mysql
-      mysql_user:
+    community.mysql.mysql_user:
       name: root
       password: "{{ mysql_root_password}}"
       check_implicit_admin: true
