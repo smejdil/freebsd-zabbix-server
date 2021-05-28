@@ -126,7 +126,7 @@
     community.mysql.mysql_user:
       name: zabbix
       password: "{{ mysql_zabbix_password }}"
-      priv: '*.*:zabbix'
+      priv: '*.*:ALL'
       state: present
 
   - name: Import zabbix schema.sql
