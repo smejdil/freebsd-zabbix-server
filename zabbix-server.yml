@@ -6,7 +6,7 @@
     - vars/vars.yml
 
   tasks:
-  - name: Install package mysql80-server
+  - name: Install package mysql57-server
     community.general.pkgng:
       name: mysql57-server
       state: present
