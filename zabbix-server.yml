@@ -75,13 +75,13 @@
       owner: root
       group: wheel
 
-  - name: Edit agent hostname
+  - name: Edit zabbix_agentd.conf Hostname=
     ansible.builtin.lineinfile:
       path: /usr/local/etc/zabbix5/zabbix_agentd.conf
       regexp: ^Hostname=.*
       line: Hostname={{ ansible_fqdn }}
 
-  - name: Edit agent server
+  - name: Edit zabbix_agentd.conf Server=
     ansible.builtin.lineinfile:
       path: /usr/local/etc/zabbix5/zabbix_agentd.conf
       regexp: ^Server=.*
@@ -157,7 +157,7 @@
       encoding: utf8
       target: /usr/local/share/zabbix5/server/database/mysql/double.sql
 
-  - name: Edit zabbix server DBPassword
+  - name: Edit zabbix_server.conf DBPassword=
     ansible.builtin.lineinfile:
       path: /usr/local/etc/zabbix5/zabbix_server.conf
       regexp: ^# DBPassword=.*

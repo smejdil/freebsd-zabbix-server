@@ -1,7 +1,0 @@
----
-# zabbix server
-
-server_url: http://localhost
-snmp_community: {$SNMP_COMMUNITY}
-
-# EOF
