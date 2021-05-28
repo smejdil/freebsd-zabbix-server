@@ -1,6 +1,10 @@
 ---
 - hosts: fbsd-zabbix-server
   remote_user: root
+
+  vars_files:
+    - vars/vars.yml
+
   tasks:
   - name: Install package zabbix5-agent
     community.general.pkgng:
