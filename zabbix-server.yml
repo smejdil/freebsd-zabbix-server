@@ -51,9 +51,9 @@
       name: apache24
       enabled: yes
 
-  - name: Enable service mysql, and not touch the state
+  - name: Enable service mysql-server, and not touch the state
     ansible.builtin.service:
-      name: mysql
+      name: mysql-server
       enabled: yes
 
   - name: Copy sample zabbix_agentd.conf
@@ -85,6 +85,11 @@
   - name: Start service zabbix5-agent, if not started
     ansible.builtin.service:
       name: zabbix_agentd
+      state: started
+
+  - name: Start service mysql-server, if not started
+    ansible.builtin.service:
+      name: mysql-server
       state: started
       
   - name: Start service zabbix5-server, if not started
