@@ -124,7 +124,7 @@
 
   - name: Create database user with name 'zabbix' and password with all database privileges
     community.mysql.mysql_user:
-      name: zabbix
+      name: zabbix@localhost
       password: "{{ mysql_zabbix_password }}"
       priv: '*.*:ALL'
       state: present
