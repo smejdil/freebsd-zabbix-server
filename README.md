@@ -53,6 +53,7 @@ Use Ansible community collection zabbix, general and pkgng module, etc.
 
 - https://galaxy.ansible.com/community/zabbix
 - https://galaxy.ansible.com/community/general
+- https://galaxy.ansible.com/community/mysql
 
 - https://docs.ansible.com/ansible/latest/collections/community/general/index.html#plugins-in-community-general
 - https://docs.ansible.com/ansible/latest/collections/community/general/pkgng_module.html
