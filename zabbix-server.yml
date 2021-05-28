@@ -1,0 +1,80 @@
+---
+- hosts: fbsd-zabbix-server
+  remote_user: root
+  tasks:
+  - name: Install package zabbix5-agent
+    community.general.pkgng:
+      name: zabbix5-agent
+      state: present
+
+  - name: Install package zabbix5-server
+    community.general.pkgng:
+      name: zabbix5-server
+      state: present
+
+  - name: Install package zabbix5-frontend
+    community.general.pkgng:
+      name: zabbix5-frontend
+      state: present
+
+  - name: Install package apache24
+    community.general.pkgng:
+      name: apache24
+      state: present
+
+  - name: Install package mod_php74
+    community.general.pkgng:
+      name: mod_php74
+      state: present
+
+  - name: Enable service zabbix_agentd, and not touch the state
+    ansible.builtin.service:
+      name: zabbix_agentd
+      enabled: yes
+
+  - name: Enable service zabbix_server, and not touch the state
+    ansible.builtin.service:
+      name: zabbix_server
+      enabled: yes
+
+  - name: Enable service apache24, and not touch the state
+    ansible.builtin.service:
+      name: apache24
+      enabled: yes
+
+  - name: Copy sample zabbix_agentd.conf
+    ansible.builtin.copy:
+      src: ./conf/zabbix_agentd.conf.sample
+      dest: /usr/local/etc/zabbix5/zabbix_agentd.conf
+      owner: root
+      group: wheel
+
+  - name: Copy sample zabbix_server.conf
+    ansible.builtin.copy:
+      src: ./conf/zabbix_server.conf.sample
+      dest: /usr/local/etc/zabbix5/zabbix_server.conf
+      owner: root
+      group: wheel
+
+  - name: Edit agent hostname
+    ansible.builtin.lineinfile:
+      path: /usr/local/etc/zabbix5/zabbix_agentd.conf
+      regexp: ^Hostname=.*
+      line: Hostname={{ ansible_fqdn }}
+
+  - name: Edit agent server
+    ansible.builtin.lineinfile:
+      path: /usr/local/etc/zabbix5/zabbix_agentd.conf
+      regexp: ^Server=.*
+      line: Server={{ zabbix_server }}
+
+  - name: Start service zabbix5-agent, if not started
+    ansible.builtin.service:
+      name: zabbix_agentd
+      state: started
+      
+  - name: Start service zabbix5-server, if not started
+    ansible.builtin.service:
+      name: zabbix_server
+      state: started
+        
