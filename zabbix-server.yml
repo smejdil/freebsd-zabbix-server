@@ -8,7 +8,7 @@
   tasks:
   - name: Install package mysql80-server
     community.general.pkgng:
-      name: mysql80-server
+      name: mysql57-server
       state: present
 
   - name: Install package zabbix5-agent
