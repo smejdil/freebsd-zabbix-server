@@ -70,6 +70,10 @@ ansible-galaxy collection install -r requirements.yml
 ansible-playbook zabbix-server.yml
 ```
 
+```console
+192.168.5.197/zabbix/
+```
+
 ### ToDo
 
 - write zabbix-server-tsdb.yml
