@@ -71,7 +71,8 @@ ansible-playbook zabbix-server.yml
 ```
 
 ```console
-192.168.5.197/zabbix/
+192.168.42.100/zabbix/
+Admin/zabbix
 ```
 
 ### ToDo
