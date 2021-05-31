@@ -1,0 +1,24 @@
+--- httpd.conf-orig	2021-05-31 07:43:57.425171000 +0000
++++ httpd.conf	2021-05-31 07:45:45.268674000 +0000
+@@ -282,7 +282,7 @@
+ # is requested.
+ #
+ <IfModule dir_module>
+-    DirectoryIndex index.html
++    DirectoryIndex index.php index.html index.htm
+ </IfModule>
+ 
+ #
+@@ -442,6 +442,12 @@
+     #
+     #AddType text/html .shtml
+     #AddOutputFilter INCLUDES .shtml
++
++    # php
++    AddType application/x-httpd-php3 .php3
++    AddType application/x-httpd-php .php
++    AddType application/x-httpd-php-source .phps
++
+ </IfModule>
+ 
+ #

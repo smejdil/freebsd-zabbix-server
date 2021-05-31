@@ -168,6 +168,36 @@
       name: zabbix_server
       state: started
 
+  - name: Copy zabbix.conf
+    ansible.builtin.copy:
+      src: ./conf/zabbix.conf
+      dest: /usr/local/etc/apache24/Includes/zabbix.conf
+      owner: root
+      group: wheel
+
+  - name: Copy httpd.conf.patch
+    ansible.builtin.copy:
+      src: ./files/httpd.conf.patch
+      dest: /usr/local/etc/apache24/httpd.conf.patch
+      owner: root
+      group: wheel
+
+  - name: Change httpd.conf by patch
+    shell: cd /usr/local/etc/apache24/ && patch < httpd.conf.patch
+
+  - name: Copy example zabbix.conf.php
+    ansible.builtin.copy:
+      src: ./conf/zabbix.conf.php.example
+      dest: /usr/local/www/zabbix5/conf/zabbix.conf.php
+      owner: zabbix
+      group: zabbix
+
+  - name: Edit zabbix.conf.php
+    ansible.builtin.lineinfile:
+      path: /usr/local/www/zabbix5/conf/zabbix.conf.php
+      regexp: ^$DB['PASSWORD']*
+      line: $DB['PASSWORD']                 = '{{ mysql_zabbix_password }}';
+
   - name: Start service apache24, if not started
     ansible.builtin.service:
       name: apache24
