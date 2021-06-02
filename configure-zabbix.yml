@@ -10,9 +10,9 @@
   tasks:
     - name: Unlink and clear templates from Zabbix server
       zabbix_template:
-        server_url: {{ server_url }}
-        login_user: {{ login_user }}
-        login_password: {{ login_password }}
+        server_url: "{{ server_url }}"
+        login_user: "{{ login_user }}"
+        login_password: "{{ login_password }}"
         host_name: Zabbix server
           clear_templates:
             - Template OS Linux by Zabbix agent
