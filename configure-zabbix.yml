@@ -8,7 +8,7 @@
     - vars/vars.yml
 
   tasks:
-    - name: Unlink and clear templates from Zabbix server
+    - name: Disable Host Zabbix server
       zabbix_host:
         server_url: "{{ server_url }}"
         login_user: "{{ login_user }}"
@@ -17,11 +17,11 @@
         status: disabled
         state: present
 
-    - name: Create a Seznam host or update
+    - name: Create a Zabbix server host or update
       zabbix_host:
         server_url: "{{ server_url }}"
-        login_user: "{{ lookup('env','ZABBIX_USER') }}"
-        login_password: "{{ lookup('env','ZABBIX_PASSWORD') }}"
+        login_user: "{{ login_user }}"
+        login_password: "{{ login_password }}"
         host_name: freebsd
         visible_name: FreeBSD Zabbix server
         description: Monitoring server
@@ -29,6 +29,7 @@
           - Zabbix servers
         link_templates:
           - Template OS FreeBSD
+          - Template App Zabbix Server
         status: enabled
         state: present
         inventory_mode: automatic
