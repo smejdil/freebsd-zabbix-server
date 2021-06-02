@@ -1,6 +1,6 @@
 ---
 - name: Using Zabbix collection
-  hosts: fbsd-zabbix-server
+  hosts: localhost
   collections:
     - community.zabbix
 
