@@ -87,6 +87,14 @@ ansible-playbook zabbix-server.yml
 Admin/zabbix
 ```
 
+- configure zabbix server by API
+
+```console
+ZABBIX_SERVER=http://192.168.5.200/zabbix/
+
+ansible-playbook configure-zabbix.yml
+```
+
 ### ToDo
 
 - write zabbix-server-tsdb.yml

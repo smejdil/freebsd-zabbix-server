@@ -10,7 +10,7 @@
   tasks:
     - name: Disable Host Zabbix server
       zabbix_host:
-        server_url: "{{ server_url }}"
+        server_url: "{{ lookup('env','ZABBIX_SERVER') }}"
         login_user: "{{ login_user }}"
         login_password: "{{ login_password }}"
         host_name: Zabbix server
@@ -19,7 +19,7 @@
 
     - name: Create a Zabbix server host or update
       zabbix_host:
-        server_url: "{{ server_url }}"
+        server_url: "{{ lookup('env','ZABBIX_SERVER') }}"
         login_user: "{{ login_user }}"
         login_password: "{{ login_password }}"
         host_name: freebsd
