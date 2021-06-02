@@ -5,20 +5,30 @@ zabbix5_server with mysql57-server on OS FreeBSD 13.
 
 ## Dependencies
 
-- Package zabbix
-- Packahe apache
+- Package zabbix - zabbix5-server-5.0.11 - Enterprise-class open source distributed monitoring (server) LTS
+- Packahe apache - apache24-2.4.46_2 - Version 2.4.x of Apache web server
+- Package php - php74-7.4.19 - PHP Scripting Language
+- Package mysql - mysql57-server-5.7.33 - Multithreaded SQL database (server)
 
 ## How it works
 
-On Linux desktop run vagrant with VirtualBox. For test install and configure zabbix_agent by ansible on FreeBSD 13
+On Linux desktop run vagrant with VirtualBox. For test install and configure
+zabbix_server and other component by ansible on FreeBSD 13
 
 ### Installation test evnviroment FreeBSD
+
+Vagrant use Vagrantfile
 
 ```console
 vagrant up
 vagrant ssh
 ```
-- Vagrant also configure sshd - PermitRootLogin yes and set up root password and install ansible package
+- Vagrant also configure network public_network, sshd - PermitRootLogin yes, set up root password and install ansible package
+
+The Vagrantfile was initialized as follows.
+```console
+vagrant init freebsd/FreeBSD-13.0-RELEASE
+```
 
 ### Installation Desktop
 
@@ -40,6 +50,8 @@ ansible "*" -i "192.168.42.100," -u root -m ping
 }
 ```
 ### Configure ansible on Desktop
+
+- test Ansible communication
 
 ```console
 sudo vim /etc/ansible/hosts
@@ -78,3 +90,4 @@ Admin/zabbix
 ### ToDo
 
 - write zabbix-server-tsdb.yml
+- solve problem with recompilation packages
