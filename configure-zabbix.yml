@@ -9,11 +9,38 @@
 
   tasks:
     - name: Unlink and clear templates from Zabbix server
-      zabbix_template:
+      zabbix_host:
         server_url: "{{ server_url }}"
         login_user: "{{ login_user }}"
         login_password: "{{ login_password }}"
         host_name: Zabbix server
-          clear_templates:
-            - Template OS Linux by Zabbix agent
+        status: disabled
         state: present
+
+    - name: Create a Seznam host or update
+      zabbix_host:
+        server_url: "{{ server_url }}"
+        login_user: "{{ lookup('env','ZABBIX_USER') }}"
+        login_password: "{{ lookup('env','ZABBIX_PASSWORD') }}"
+        host_name: freebsd
+        visible_name: FreeBSD Zabbix server
+        description: Monitoring server
+        host_groups:
+          - Zabbix servers
+        link_templates:
+          - Template OS FreeBSD
+        status: enabled
+        state: present
+        inventory_mode: automatic
+        interfaces:
+          - type: 1
+            main: 1
+            useip: 1
+            ip: 127.0.0.1
+            dns: "freebsd"
+            port: "10050"
+        tags:
+          - tag: OS
+            value: FreeBSD
+          - tag: App
+            value: Zabbix
