@@ -6,5 +6,7 @@ zabbix_server: 127.0.0.1
 snmp_community: "{$SNMP_COMMUNITY}"
 mysql_root_password: FreeBSD13_MySQL57
 mysql_zabbix_password: FreeBSD13_Zabbix5011
+login_user: Admin
+login_password: zabbix
 
 # EOF

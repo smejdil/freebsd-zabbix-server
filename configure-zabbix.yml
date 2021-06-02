@@ -1,0 +1,19 @@
+---
+- name: Using Zabbix collection
+  hosts: fbsd-zabbix-server
+  collections:
+    - community.zabbix
+
+  vars_files:
+    - vars/vars.yml
+
+  tasks:
+    - name: Unlink and clear templates from Zabbix server
+      zabbix_template:
+        server_url: {{ server_url }}
+        login_user: {{ login_user }}
+        login_password: {{ login_password }}
+        host_name: Zabbix server
+          clear_templates:
+            - Template OS Linux by Zabbix agent
+        state: present
