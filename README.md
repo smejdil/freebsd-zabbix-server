@@ -61,7 +61,7 @@ freebsd ansible_ssh_host=192.168.42.100 ansible_ssh_user=root
 
 ansible fbsd-zabbix-server -m ping
 ```
-Use Ansible community collection zabbix, general and pkgng module, etc.
+Use Ansible community collection zabbix, general and mysql. And pkgng, portinstall module, etc.
 
 - https://galaxy.ansible.com/community/zabbix
 - https://galaxy.ansible.com/community/general
