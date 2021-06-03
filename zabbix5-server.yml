@@ -1,5 +1,5 @@
 ---
-- name: Using General, Buildin and Zabbix collection  
+- name: Using General, Buildin collection  
   hosts: fbsd-zabbix-server
   remote_user: root
   collections:
@@ -69,14 +69,14 @@
 
   - name: Copy sample zabbix_agentd.conf
     copy:
-      src: ./conf/zabbix_agentd.conf.sample
+      src: ./conf/zabbix5_agentd.conf.sample
       dest: /usr/local/etc/zabbix5/zabbix_agentd.conf
       owner: root
       group: wheel
 
   - name: Copy sample zabbix_server.conf
     copy:
-      src: ./conf/zabbix_server.conf.sample
+      src: ./conf/zabbix5_server.conf.sample
       dest: /usr/local/etc/zabbix5/zabbix_server.conf
       owner: root
       group: wheel
@@ -176,7 +176,7 @@
 
   - name: Copy zabbix.conf
     copy:
-      src: ./conf/zabbix.conf
+      src: ./conf/zabbix5.conf
       dest: /usr/local/etc/apache24/Includes/zabbix.conf
       owner: root
       group: wheel
@@ -188,7 +188,7 @@
 
   - name: Config file zabbix.conf.php
     template:
-      src: "./templates/zabbix.conf.php.j2"
+      src: "./templates/zabbix5.conf.php.j2"
       dest: "/usr/local/www/zabbix5/conf/zabbix.conf.php"
       owner: www
       group: www

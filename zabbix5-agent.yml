@@ -1,37 +1,42 @@
 ---
-- hosts: fbsd-vagrant
+- name: Using General, Buildin collection
+  hosts: fbsd-vagrant
   remote_user: root
+  collections:
+    - community.general
+    - ansible.builtin
+  
   tasks:
   - name: Install package zabbix5-agent
-    community.general.pkgng:
+    pkgng:
       name: zabbix5-agent
       state: present
 
   - name: Enable service zabbix_agentd, and not touch the state
-    ansible.builtin.service:
+    service:
       name: zabbix_agentd
       enabled: yes
 
   - name: Copy sample zabbix_agentd.conf
-    ansible.builtin.copy:
-      src: zabbix_agentd.conf.sample
+    copy:
+      src: zabbix5_agentd.conf.sample
       dest: /usr/local/etc/zabbix5/zabbix_agentd.conf
       owner: root
       group: wheel
 
   - name: Edit  agent hostname
-    ansible.builtin.lineinfile:
+    lineinfile:
       path: /usr/local/etc/zabbix5/zabbix_agentd.conf
       regexp: ^Hostname=.*
       line: Hostname={{ ansible_fqdn }}
 
   - name: Edit agent server
-    ansible.builtin.lineinfile:
+    lineinfile:
       path: /usr/local/etc/zabbix5/zabbix_agentd.conf
       regexp: ^Server=.*
       line: Server={{ zabbix_server }}
 
   - name: Start service zabbix5-agent, if not started
-    ansible.builtin.service:
+    service:
       name: zabbix_agentd
       state: started
