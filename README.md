@@ -5,7 +5,7 @@ zabbix5_server with mysql57-server on OS FreeBSD 13.
 
 ## Dependencies
 
-- Package zabbix - zabbix5-server-5.0.11 - Enterprise-class open source distributed monitoring (server) LTS
+- Package zabbix - zabbix5-server or zabbix52-server or zabbix54-server
 - Packahe apache - apache24-2.4.46_2 - Version 2.4.x of Apache web server
 - Package php - php74-7.4.19 - PHP Scripting Language
 - Package mysql - mysql57-server-5.7.33 - Multithreaded SQL database (server)
@@ -79,7 +79,9 @@ ansible-galaxy collection install -r requirements.yml
 ## Run Ansible playbook with enviroment
 
 ```console
-ansible-playbook zabbix-server.yml
+ansible-playbook zabbix5-server.yml
+ansible-playbook zabbix52-server.yml
+ansible-playbook zabbix54-server.yml
 ```
 
 ```console
