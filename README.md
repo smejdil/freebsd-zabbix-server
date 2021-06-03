@@ -76,7 +76,9 @@ Use Ansible community collection zabbix, general and pkgng module, etc.
 ansible-galaxy collection install -r requirements.yml
 ```
 
-## Run Ansible playbook with enviroment
+## Run Ansible playbook
+
+- choise version of zabbix
 
 ```console
 ansible-playbook zabbix5-server.yml
