@@ -1,99 +1,105 @@
 ---
-- hosts: fbsd-zabbix-server
+- name: Using General, Buildin and Zabbix collection  
+  hosts: fbsd-zabbix-server
   remote_user: root
+  collections:
+    - community.general
+    - community.mysql
+    - ansible.builtin
+    - ansible.posix
 
   vars_files:
     - vars/vars.yml
 
   tasks:
   - name: Install package mysql57-server
-    community.general.pkgng:
+    pkgng:
       name: mysql57-server
       state: present
 
   - name: Install package zabbix5-agent
-    community.general.pkgng:
+    pkgng:
       name: zabbix5-agent
       state: present
 
   - name: Install package zabbix5-server
-    community.general.pkgng:
+    pkgng:
       name: zabbix5-server
       state: present
 
   - name: Install package zabbix5-frontend
-    community.general.pkgng:
+    pkgng:
       name: zabbix5-frontend
       state: present
 
   - name: Install package apache24
-    community.general.pkgng:
+    pkgng:
       name: apache24
       state: present
 
   - name: Install package mod_php74
-    community.general.pkgng:
+    pkgng:
       name: mod_php74
       state: present
 
   - name: Install package py37-mysqlclient
-    community.general.pkgng:
+    pkgng:
       name: py37-mysqlclient
       state: present
 
   - name: Enable service zabbix_agentd, and not touch the state
-    ansible.builtin.service:
+    service:
       name: zabbix_agentd
       enabled: yes
 
   - name: Enable service zabbix_server, and not touch the state
-    ansible.builtin.service:
+    service:
       name: zabbix_server
       enabled: yes
 
   - name: Enable service apache24, and not touch the state
-    ansible.builtin.service:
+    service:
       name: apache24
       enabled: yes
 
   - name: Enable service mysql-server, and not touch the state
-    ansible.builtin.service:
+    service:
       name: mysql-server
       enabled: yes
 
   - name: Copy sample zabbix_agentd.conf
-    ansible.builtin.copy:
+    copy:
       src: ./conf/zabbix_agentd.conf.sample
       dest: /usr/local/etc/zabbix5/zabbix_agentd.conf
       owner: root
       group: wheel
 
   - name: Copy sample zabbix_server.conf
-    ansible.builtin.copy:
+    copy:
       src: ./conf/zabbix_server.conf.sample
       dest: /usr/local/etc/zabbix5/zabbix_server.conf
       owner: root
       group: wheel
 
   - name: Edit zabbix_agentd.conf Hostname=
-    ansible.builtin.lineinfile:
+    lineinfile:
       path: /usr/local/etc/zabbix5/zabbix_agentd.conf
       regexp: ^Hostname=.*
       line: Hostname={{ ansible_fqdn }}
 
   - name: Edit zabbix_agentd.conf Server=
-    ansible.builtin.lineinfile:
+    lineinfile:
       path: /usr/local/etc/zabbix5/zabbix_agentd.conf
       regexp: ^Server=.*
       line: Server={{ zabbix_server }}
 
   - name: Start service zabbix5-agent, if not started
-    ansible.builtin.service:
+    service:
       name: zabbix_agentd
       state: started
 
   - name: Start service mysql-server, if not started
-    ansible.builtin.service:
+    service:
       name: mysql-server
       state: started
 
@@ -102,13 +108,13 @@
 
 #  - name: Set root user password
 #    # If .my.cnf already exists, this will cause an mysql-root-password update.
-#    community.mysql.mysql_user:
+#    mysql_user:
 #      name: root
 #      password: "{{ mysql_root_password }}"
 #      check_implicit_admin: true
     
   - name: Create .my.cnf
-    ansible.builtin.template:
+    template:
       src: "./templates/client.my.cnf.j2"
       dest: "/root/.my.cnf"
       owner: root
@@ -116,84 +122,72 @@
       mode: 0600
 
   - name: Create a new database with name 'zabbix'
-    community.mysql.mysql_db:
+    mysql_db:
       name: zabbix
       collation: utf8_bin
       encoding: utf8
       state: present
 
   - name: Create database user with name 'zabbix' and password with all database privileges
-    community.mysql.mysql_user:
+    mysql_user:
       name: zabbix
       password: "{{ mysql_zabbix_password }}"
       priv: 'zabbix.*:ALL,GRANT'
       state: present
 
   - name: Import zabbix schema.sql
-    community.mysql.mysql_db:
+    mysql_db:
       state: import
       name: zabbix
       encoding: utf8
       target: /usr/local/share/zabbix5/server/database/mysql/schema.sql
 
   - name: Import zabbix images.sql
-    community.mysql.mysql_db:
+    mysql_db:
       state: import
       name: zabbix
       encoding: utf8
       target: /usr/local/share/zabbix5/server/database/mysql/images.sql
 
   - name: Import zabbix data.sql
-    community.mysql.mysql_db:
+    mysql_db:
       state: import
       name: zabbix
       encoding: utf8
       target: /usr/local/share/zabbix5/server/database/mysql/data.sql
 
   - name: Import zabbix double.sql
-    community.mysql.mysql_db:
+    mysql_db:
       state: import
       name: zabbix
       encoding: utf8
       target: /usr/local/share/zabbix5/server/database/mysql/double.sql
 
   - name: Edit zabbix_server.conf DBPassword=
-    ansible.builtin.lineinfile:
+    lineinfile:
       path: /usr/local/etc/zabbix5/zabbix_server.conf
       regexp: ^# DBPassword=.*
       line: DBPassword={{ mysql_zabbix_password }}
 
   - name: Start service zabbix5-server, if not started
-    ansible.builtin.service:
+    service:
       name: zabbix_server
       state: started
 
   - name: Copy zabbix.conf
-    ansible.builtin.copy:
+    copy:
       src: ./conf/zabbix.conf
       dest: /usr/local/etc/apache24/Includes/zabbix.conf
       owner: root
       group: wheel
 
-  - name: Copy httpd.conf.patch
-    ansible.builtin.copy:
+  - name: Apply patch to file httpd.conf
+    patch:
       src: ./files/httpd.conf.patch
-      dest: /usr/local/etc/apache24/httpd.conf.patch
-      owner: root
-      group: wheel
-
-  - name: Change httpd.conf by patch
-    shell: cd /usr/local/etc/apache24/ && patch < httpd.conf.patch
-
-  - name: Copy example zabbix.conf.php
-    ansible.builtin.copy:
-      src: ./conf/zabbix.conf.php.example
-      dest: /usr/local/www/zabbix5/conf/zabbix.conf.php
-      owner: zabbix
-      group: zabbix
+      dest: /usr/local/etc/apache24/httpd.conf
 
   - name: Config file zabbix.conf.php
-    ansible.builtin.template:
+    template:
       src: "./templates/zabbix.conf.php.j2"
       dest: "/usr/local/www/zabbix5/conf/zabbix.conf.php"
       owner: www
@@ -201,8 +195,8 @@
       mode: 0400
 
   - name: Start service apache24, if not started
-    ansible.builtin.service:
+    service:
       name: apache24
       state: started
       
-# EOF        
+# EOF
