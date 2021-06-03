@@ -1,11 +1,11 @@
 ## FreeBSD Zabbix Server
 
-This small project is used for install zabbix5_agent, zabbix5_frontend and
-zabbix5_server with mysql57-server on OS FreeBSD 13.
+This small project is used for install zabbix[5|52|54]_agent, zabbix[5|52|54]_frontend and
+zabbix[5|52|54]_server with mysql57-server on OS FreeBSD 13.
 
 ## Dependencies
 
-- Package zabbix - zabbix5-server or zabbix52-server or zabbix54-server
+- Package zabbix - zabbix[5|52|54]-server
 - Packahe apache - apache24-2.4.46_2 - Version 2.4.x of Apache web server
 - Package php - php74-7.4.19 - PHP Scripting Language
 - Package mysql - mysql57-server-5.7.33 - Multithreaded SQL database (server)
@@ -69,6 +69,7 @@ Use Ansible community collection zabbix, general and pkgng module, etc.
 
 - https://docs.ansible.com/ansible/latest/collections/community/general/index.html#plugins-in-community-general
 - https://docs.ansible.com/ansible/latest/collections/community/general/pkgng_module.html
+- https://docs.ansible.com/ansible/latest/collections/community/general/portinstall_module.html
 
 ## Install Ansible module
 
@@ -79,6 +80,8 @@ ansible-galaxy collection install -r requirements.yml
 ## Run Ansible playbook
 
 - choise version of zabbix
+- 3.6.2021 - zabbix54 does not exist in the binary version
+- ansible use module community.general.portinstall
 
 ```console
 ansible-playbook zabbix5-server.yml
