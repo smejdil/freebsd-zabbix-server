@@ -5,3 +5,5 @@ collections:
     version: 3.0.2
   - name: community.mysql
     version: 2.1.0
+  - name: community.postgresql
+    version: 1.2.0
