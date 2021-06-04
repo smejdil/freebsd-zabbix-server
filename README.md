@@ -84,9 +84,9 @@ ansible-galaxy collection install -r requirements.yml
 - ansible use module community.general.portinstall
 
 ```console
-ansible-playbook zabbix5-server.yml
-ansible-playbook zabbix52-server.yml
-ansible-playbook zabbix54-server.yml
+ansible-playbook zabbix5-server-mysql.yml
+ansible-playbook zabbix52-server-mysql.yml
+ansible-playbook zabbix54-server-mysql.yml
 ```
 
 ```console
