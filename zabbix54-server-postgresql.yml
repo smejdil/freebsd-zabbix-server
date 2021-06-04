@@ -1,0 +1,222 @@
+---
+- name: Using General, Buildin collection  
+  hosts: fbsd-zabbix-server
+  remote_user: root
+  collections:
+    - community.general
+    - community.postgresql
+    - ansible.builtin
+    - ansible.posix
+
+  vars_files:
+    - vars/vars.yml
+
+  tasks:
+  - name: Install package postgresql12-server
+    pkgng:
+      name: postgresql12-server
+      state: present
+
+  - name: Install package apache24
+    pkgng:
+      name: apache24
+      state: present
+
+  - name: Install package php
+    pkgng:
+      name: mod_php74, php74, php74-bcmath, php74-ctype, php74-dom, php74-fileinfo, php74-filter, php74-gd, php74-gettext, php74-json, php74-ldap, php74-mbstring, php74-openssl, php74-session, php74-simplexml, php74-snmp, php74-sockets, php74-xml, php74-xmlreader, php74-xmlwriter, php74-pgsql
+      state: present      
+
+  - name: Install package for easy compilation agent, server and frontend
+    pkgng:
+      name: pkgconf, fping, autoconf, gmake, re2c, texinfo, m4, help2man, unixODBC, net-snmp, libevent, curl, perl5, portupgrade, libunwind, libedit, php74, openipmi
+      state: present
+
+  - name: Install package zabbix54-agent
+    portinstall:
+      name: net-mgmt/zabbix54-agent
+      state: present
+
+  - name: Create a directory net-mgmt_zabbix54-server if it does not exist
+    file:
+      path: /var/db/ports/net-mgmt_zabbix54-server/
+      state: directory
+      owner: root
+      group: wheel
+      mode: 0755
+
+  - name: Copy zabbix54-server build options
+    copy:
+      src: ./files/net-mgmt_zabbix54-server_options
+      dest: /var/db/ports/net-mgmt_zabbix54-server/options
+      owner: root
+      group: wheel
+  
+  - name: Install package zabbix54-server
+    portinstall:
+      name: net-mgmt/zabbix54-server
+      state: present
+
+  - name: Create a directory net-mgmt_zabbix54-frontend if it does not exist
+    file:
+      path: /var/db/ports/net-mgmt_zabbix54-frontend/
+      state: directory
+      owner: root
+      group: wheel
+      mode: 0755
+
+  - name: Copy zabbix54-frontend build options
+    copy:
+      src: ./files/net-mgmt_zabbix54-frontend_options
+      dest: /var/db/ports/net-mgmt_zabbix54-frontend/options
+      owner: root
+      group: wheel
+
+  - name: Install package zabbix54-frontend
+    portinstall:
+      name: net-mgmt/zabbix54-frontend
+      state: present
+
+  - name: Install package py37-postgresql
+    pkgng:
+      name: py37-postgresql
+      state: present
+
+  - name: Enable service zabbix_agentd, and not touch the state
+    service:
+      name: zabbix_agentd
+      enabled: yes
+
+  - name: Enable service zabbix_server, and not touch the state
+    service:
+      name: zabbix_server
+      enabled: yes
+
+  - name: Enable service apache24, and not touch the state
+    service:
+      name: apache24
+      enabled: yes
+
+  - name: Enable service , and not touch the state
+    service:
+      name: postgresql
+      enabled: yes
+
+  - name: Copy sample zabbix_agentd.conf
+    copy:
+      src: ./conf/zabbix54_agentd.conf.sample
+      dest: /usr/local/etc/zabbix54/zabbix_agentd.conf
+      owner: root
+      group: wheel
+
+  - name: Copy sample zabbix_server.conf
+    copy:
+      src: ./conf/zabbix54_server.conf.sample
+      dest: /usr/local/etc/zabbix54/zabbix_server.conf
+      owner: root
+      group: wheel
+
+  - name: Edit zabbix_agentd.conf Hostname=
+    lineinfile:
+      path: /usr/local/etc/zabbix54/zabbix_agentd.conf
+      regexp: ^Hostname=.*
+      line: Hostname={{ ansible_fqdn }}
+
+  - name: Edit zabbix_agentd.conf Server=
+    lineinfile:
+      path: /usr/local/etc/zabbix54/zabbix_agentd.conf
+      regexp: ^Server=.*
+      line: Server={{ zabbix_server }}
+
+  - name: Start service zabbix54-agent, if not started
+    service:
+      name: zabbix_agentd
+      state: started
+
+  - name: Initdb service postgresql
+    shell: /usr/local/etc/rc.d/postgresql initdb
+
+  - name: Start service postgresql, if not started
+    service:
+      name: postgresql
+      state: started
+
+#  - name: Create a new database with name 'zabbix'
+#    mysql_db:
+#      name: zabbix
+#      collation: utf8_bin
+#      encoding: utf8
+#      state: present
+
+#  - name: Create database user with name 'zabbix' and password with all database privileges
+#    mysql_user:
+#      name: zabbix
+#      password: "{{ mysql_zabbix_password }}"
+#      priv: 'zabbix.*:ALL,GRANT'
+#      state: present
+
+#  - name: Import zabbix schema.sql
+#    mysql_db:
+#      state: import
+#      name: zabbix
+#      encoding: utf8
+#      target: /usr/local/share/zabbix54/server/database/mysql/schema.sql
+
+#  - name: Import zabbix images.sql
+#    mysql_db:
+#      state: import
+#      name: zabbix
+#      encoding: utf8
+#      target: /usr/local/share/zabbix54/server/database/mysql/images.sql
+
+#  - name: Import zabbix data.sql
+#    mysql_db:
+#      state: import
+#      name: zabbix
+#      encoding: utf8
+#      target: /usr/local/share/zabbix54/server/database/mysql/data.sql
+
+#  - name: Import zabbix double.sql
+#    mysql_db:
+#      state: import
+#      name: zabbix
+#      encoding: utf8
+#      target: /usr/local/share/zabbix54/server/database/mysql/double.sql
+
+#  - name: Edit zabbix_server.conf DBPassword=
+#    lineinfile:
+#      path: /usr/local/etc/zabbix54/zabbix_server.conf
+#      regexp: ^# DBPassword=.*
+#      line: DBPassword={{ mysql_zabbix_password }}
+
+#  - name: Start service zabbix54-server, if not started
+#    service:
+#      name: zabbix_server
+#      state: started
+
+#  - name: Copy zabbix.conf
+#    copy:
+#      src: ./conf/zabbix54.conf
+#      dest: /usr/local/etc/apache24/Includes/zabbix.conf
+#      owner: root
+#      group: wheel
+
+#  - name: Apply patch to file httpd.conf
+#    patch:
+#      src: ./files/httpd.conf.patch
+#      dest: /usr/local/etc/apache24/httpd.conf
+
+#  - name: Config file zabbix.conf.php
+#    template:
+#      src: "./templates/zabbix54.conf.php.j2"
+#      dest: "/usr/local/www/zabbix54/conf/zabbix.conf.php"
+#      owner: www
+#      group: www
+#      mode: 0400
+
+#  - name: Start service apache24, if not started
+#    service:
+#      name: apache24
+#      state: started
+      
+# EOF

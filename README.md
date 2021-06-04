@@ -66,6 +66,7 @@ Use Ansible community collection zabbix, general and mysql. And pkgng, portinsta
 - https://galaxy.ansible.com/community/zabbix
 - https://galaxy.ansible.com/community/general
 - https://galaxy.ansible.com/community/mysql
+- https://galaxy.ansible.com/community/postgresql
 
 - https://docs.ansible.com/ansible/latest/collections/community/general/index.html#plugins-in-community-general
 - https://docs.ansible.com/ansible/latest/collections/community/general/pkgng_module.html
