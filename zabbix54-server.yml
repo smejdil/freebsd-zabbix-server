@@ -29,7 +29,7 @@
 
   - name: Install package for easy compilation agent, server and frontend
     pkgng:
-      name: fping, autoconf, gmake, re2c, texinfo, m4, help2man, unixODBC, net-snmp, libevent, curl, perl5, portupgrade, libunwind, libedit, php74
+      name: pkgconf, fping, autoconf, gmake, re2c, texinfo, m4, help2man, unixODBC, net-snmp, libevent, curl, perl5, portupgrade, libunwind, libedit, php74
       state: present
 
   - name: Install package zabbix54-agent
