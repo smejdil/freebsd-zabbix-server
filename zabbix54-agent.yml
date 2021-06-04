@@ -8,8 +8,8 @@
   
   tasks:
   - name: Install package zabbix54-agent
-    pkgng:
-      name: zabbix54-agent
+    portinstall:
+      name: net-mgmt/zabbix54-agent
       state: present
 
   - name: Enable service zabbix_agentd, and not touch the state
@@ -19,7 +19,7 @@
 
   - name: Copy sample zabbix_agentd.conf
     copy:
-      src: zabbix54_agentd.conf.sample
+      src: ./conf/zabbix5_agentd.conf.sample
       dest: /usr/local/etc/zabbix54/zabbix_agentd.conf
       owner: root
       group: wheel

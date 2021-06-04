@@ -19,7 +19,7 @@
 
   - name: Copy sample zabbix_agentd.conf
     copy:
-      src: zabbix5_agentd.conf.sample
+      src: ./conf/zabbix5_agentd.conf.sample
       dest: /usr/local/etc/zabbix5/zabbix_agentd.conf
       owner: root
       group: wheel
