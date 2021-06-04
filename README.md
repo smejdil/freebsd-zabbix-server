@@ -87,6 +87,8 @@ ansible-galaxy collection install -r requirements.yml
 ansible-playbook zabbix5-server-mysql.yml
 ansible-playbook zabbix52-server-mysql.yml
 ansible-playbook zabbix54-server-mysql.yml
+
+ansible-playbook zabbix54-server-postgresql.yml
 ```
 
 ```console
