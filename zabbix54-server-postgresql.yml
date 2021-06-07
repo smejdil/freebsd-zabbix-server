@@ -77,9 +77,9 @@
       name: net-mgmt/zabbix54-frontend
       state: present
 
-  - name: Install package py37-postgresql
-    pkgng:
-      name: py37-postgresql
+  - name: Install package py-psycopg2
+    portinstall:
+      name: databases/py-psycopg2
       state: present
 
   - name: Enable service zabbix_agentd, and not touch the state
@@ -146,9 +146,8 @@
 
   - name: Create user zabbix
     postgresql_user:
-    name: zabbix
-    password: {{ pgsql_zabbix_password }}
-    state: present
+      name: zabbix
+      state: present
 
   - name: Create a directory /data/pgsql for tablespace
     file:
@@ -160,9 +159,9 @@
 
   - name: Create a new tablespace called zabbix and set zabbix as an its owner
     postgresql_tablespace:
-    name: zabbix
-    owner: zabbix
-    location: /data/pgsql
+      name: zabbix
+      owner: zabbix
+      location: /data/pgsql
 
   - name: Create a new database with name 'zabbix'
     postgresql_db:
