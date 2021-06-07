@@ -141,19 +141,35 @@
       name: postgresql
       state: started
 
-#  - name: Create a new database with name 'zabbix'
-#    mysql_db:
-#      name: zabbix
-#      collation: utf8_bin
-#      encoding: utf8
-#      state: present
+  - name: Create root user postgresql
+    shell: su -m postgres -c "createuser -s root"
 
-#  - name: Create database user with name 'zabbix' and password with all database privileges
-#    mysql_user:
-#      name: zabbix
-#      password: "{{ mysql_zabbix_password }}"
-#      priv: 'zabbix.*:ALL,GRANT'
-#      state: present
+  - name: Create user zabbix
+    postgresql_user:
+    name: zabbix
+    password: {{ pgsql_zabbix_password }}
+    state: present
+
+  - name: Create a directory /data/pgsql for tablespace
+    file:
+      path: /data/pgsql/
+      state: directory
+      owner: postgres
+      group: postgres
+      mode: 0755
+
+  - name: Create a new tablespace called zabbix and set zabbix as an its owner
+    postgresql_tablespace:
+    name: zabbix
+    owner: zabbix
+    location: /data/pgsql
+
+  - name: Create a new database with name 'zabbix'
+    postgresql_db:
+      name: zabbix
+      tablespace: zabbix
+      encoding: UTF-8
+      state: present
 
 #  - name: Import zabbix schema.sql
 #    mysql_db:

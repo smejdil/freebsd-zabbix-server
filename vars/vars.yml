@@ -6,6 +6,7 @@ zabbix_server: 127.0.0.1
 snmp_community: "{$SNMP_COMMUNITY}"
 mysql_root_password: Zabbix_MySQL_57
 mysql_zabbix_password: Monitoring=Zabbix
+pgsql_zabbix_password: Monitoring=Zabbix
 login_user: Admin
 login_password: zabbix
 
