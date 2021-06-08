@@ -97,7 +97,7 @@
       name: apache24
       enabled: yes
 
-  - name: Enable service , and not touch the state
+  - name: Enable service postgresql, and not touch the state
     service:
       name: postgresql
       enabled: yes
