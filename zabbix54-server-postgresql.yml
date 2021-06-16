@@ -27,9 +27,9 @@
       name: mod_php74, php74, php74-bcmath, php74-ctype, php74-dom, php74-fileinfo, php74-filter, php74-gd, php74-gettext, php74-json, php74-ldap, php74-mbstring, php74-openssl, php74-session, php74-simplexml, php74-snmp, php74-sockets, php74-xml, php74-xmlreader, php74-xmlwriter, php74-pgsql
       state: present      
 
-  - name: Install package for easy compilation agent, server and frontend
+  - name: Install package for easy compilation agent, server, frontend and timescaledb
     pkgng:
-      name: pkgconf, fping, autoconf, gmake, re2c, texinfo, m4, help2man, unixODBC, net-snmp, libevent, curl, perl5, portupgrade, libunwind, libedit, php74, openipmi, libtextstyle, gettext-tools, mpdecimal
+      name: pkgconf, fping, autoconf, gmake, cmake, re2c, texinfo, m4, help2man, unixODBC, net-snmp, libevent, curl, perl5, portupgrade, libunwind, libedit, php74, openipmi, libtextstyle, gettext-tools, mpdecimal, ninja
       state: present
 
   - name: Install package zabbix54-agent
@@ -170,33 +170,53 @@
       encoding: UTF-8
       state: present
 
-#  - name: Import zabbix schema.sql
-#    mysql_db:
-#      state: import
-#      name: zabbix
-#      encoding: utf8
-#      target: /usr/local/share/zabbix54/server/database/mysql/schema.sql
+  - name: Import Zabbix schema.sql from SQL script
+    postgresql_query:
+      db: zabbix
+      path_to_script: /usr/local/share/zabbix54/server/database/postgresql/schema.sql
 
-#  - name: Import zabbix images.sql
-#    mysql_db:
-#      state: import
-#      name: zabbix
-#      encoding: utf8
-#      target: /usr/local/share/zabbix54/server/database/mysql/images.sql
+  - name: Import Zabbix images.sql from SQL script
+    postgresql_query:
+      db: zabbix
+      path_to_script: /usr/local/share/zabbix54/server/database/postgresql/images.sql
 
-#  - name: Import zabbix data.sql
-#    mysql_db:
-#      state: import
-#      name: zabbix
-#      encoding: utf8
-#      target: /usr/local/share/zabbix54/server/database/mysql/data.sql
+  - name: Import Zabbix data.sql from SQL script
+    postgresql_query:
+      db: zabbix
+      path_to_script: /usr/local/share/zabbix54/server/database/postgresql/data.sql
 
-#  - name: Import zabbix double.sql
-#    mysql_db:
-#      state: import
-#      name: zabbix
-#      encoding: utf8
-#      target: /usr/local/share/zabbix54/server/database/mysql/double.sql
+  - name: Import Zabbix double.sql from SQL script
+    postgresql_query:
+      db: zabbix
+      path_to_script: /usr/local/share/zabbix54/server/database/postgresql/double.sql
+
+  - name: Install package timescaledb
+    portinstall:
+      name: databases/timescaledb
+      state: present
+
+  - name: Config file templates/postgresql.conf
+    template:
+      src: "./templates/templates/postgresql.conf.j2"
+      dest: "/var/db/postgres/data12/postgresql.conf"
+      owner: postgres
+      group: postgres
+      mode: 0400
+
+  - name: Restart service postgresql
+    service:
+      name: postgresql
+      state: restarted
+
+  - name: Create extension TimescaleDB
+    postgresql_query:
+      db: zabbix
+      query: CREATE EXTENSION IF NOT EXISTS timescaledb CASCADE
+
+  - name: Import Zabbix timescaledb.sql from SQL script
+    postgresql_query:
+      db: zabbix
+      path_to_script: /usr/local/share/zabbix54/server/database/postgresql/timescaledb.sql
 
 #  - name: Edit zabbix_server.conf DBPassword=
 #    lineinfile:
@@ -209,29 +229,29 @@
 #      name: zabbix_server
 #      state: started
 
-#  - name: Copy zabbix.conf
-#    copy:
-#      src: ./conf/zabbix54.conf
-#      dest: /usr/local/etc/apache24/Includes/zabbix.conf
-#      owner: root
-#      group: wheel
+  - name: Copy zabbix.conf
+    copy:
+      src: ./conf/zabbix54.conf
+      dest: /usr/local/etc/apache24/Includes/zabbix.conf
+      owner: root
+      group: wheel
 
-#  - name: Apply patch to file httpd.conf
-#    patch:
-#      src: ./files/httpd.conf.patch
-#      dest: /usr/local/etc/apache24/httpd.conf
+  - name: Apply patch to file httpd.conf
+    patch:
+      src: ./files/httpd.conf.patch
+      dest: /usr/local/etc/apache24/httpd.conf
 
-#  - name: Config file zabbix.conf.php
-#    template:
-#      src: "./templates/zabbix54.conf.php.j2"
-#      dest: "/usr/local/www/zabbix54/conf/zabbix.conf.php"
-#      owner: www
-#      group: www
-#      mode: 0400
+  - name: Config file zabbix.conf.php
+    template:
+      src: "./templates/zabbix54.conf.php.j2"
+      dest: "/usr/local/www/zabbix54/conf/zabbix.conf.php"
+      owner: www
+      group: www
+      mode: 0400
 
-#  - name: Start service apache24, if not started
-#    service:
-#      name: apache24
-#      state: started
+  - name: Start service apache24, if not started
+    service:
+      name: apache24
+      state: started
       
 # EOF
