@@ -180,15 +180,19 @@
       db: zabbix
       path_to_script: /usr/local/share/zabbix54/server/database/postgresql/images.sql
 
-  - name: Import Zabbix data.sql from SQL script
-    postgresql_query:
-      db: zabbix
-      path_to_script: /usr/local/share/zabbix54/server/database/postgresql/data.sql
-
   - name: Import Zabbix double.sql from SQL script
     postgresql_query:
       db: zabbix
       path_to_script: /usr/local/share/zabbix54/server/database/postgresql/double.sql
+
+# Import failed :-(
+#  - name: Import Zabbix data.sql from SQL script
+#    postgresql_query:
+#      db: zabbix
+#      path_to_script: /usr/local/share/zabbix54/server/database/postgresql/data.sql
+
+  - name: Import Zabbix data.sql by shell :-(
+    shell: psql zabbix < /usr/local/share/zabbix54/server/database/postgresql/data.sql
 
   - name: Install package timescaledb
     portinstall:
@@ -197,7 +201,7 @@
 
   - name: Config file templates/postgresql.conf
     template:
-      src: "./templates/templates/postgresql.conf.j2"
+      src: "./templates/postgresql.conf.j2"
       dest: "/var/db/postgres/data12/postgresql.conf"
       owner: postgres
       group: postgres
@@ -213,21 +217,24 @@
       db: zabbix
       query: CREATE EXTENSION IF NOT EXISTS timescaledb CASCADE
 
-  - name: Import Zabbix timescaledb.sql from SQL script
-    postgresql_query:
-      db: zabbix
-      path_to_script: /usr/local/share/zabbix54/server/database/postgresql/timescaledb.sql
+#  - name: Import Zabbix timescaledb.sql from SQL script
+#    postgresql_query:
+#      db: zabbix
+#      path_to_script: /usr/local/share/zabbix54/server/database/postgresql/timescaledb.sql
 
-#  - name: Edit zabbix_server.conf DBPassword=
-#    lineinfile:
-#      path: /usr/local/etc/zabbix54/zabbix_server.conf
-#      regexp: ^# DBPassword=.*
-#      line: DBPassword={{ mysql_zabbix_password }}
+  - name: Import Zabbix timescaledb.sql by shell :-(
+    shell: psql zabbix < /usr/local/share/zabbix54/server/database/postgresql/timescaledb.sql
 
-#  - name: Start service zabbix54-server, if not started
-#    service:
-#      name: zabbix_server
-#      state: started
+  - name: Edit zabbix_server.conf DBPassword=
+    lineinfile:
+      path: /usr/local/etc/zabbix54/zabbix_server.conf
+      regexp: ^# DBPassword=.*
+      line: DBPassword={{ pgsql_zabbix_password }}
+
+  - name: Start service zabbix54-server, if not started
+    service:
+      name: zabbix_server
+      state: started
 
   - name: Copy zabbix.conf
     copy:
