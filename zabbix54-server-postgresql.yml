@@ -82,6 +82,8 @@
       name: databases/py-psycopg2
       state: present
 
+interpreter_python: /usr/local/bin/python3.8
+
   - name: Enable service zabbix_agentd, and not touch the state
     service:
       name: zabbix_agentd
