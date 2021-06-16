@@ -35,12 +35,13 @@ vagrant init freebsd/FreeBSD-13.0-RELEASE
 - install ssh public key to FreeBSD
 
 ```console
-cd ~/.ssh && ssh-copy-id -i id_rsa.pub root@192.168.42.100
+VAGRANT_IP=192.168.42.100
+cd ~/.ssh && ssh-copy-id -i id_rsa.pub root@${VAGRANT_IP}
 cd ${HOME}/work/freebsd-zabbix-server
 ```
 - test Ansible communication
 ```console
-ansible "*" -i "192.168.42.100," -u root -m ping
+ansible "*" -i "${VAGRANT_IP}," -u root -m ping
 192.168.42.100 | SUCCESS => {
     "ansible_facts": {
         "discovered_interpreter_python": "/usr/local/bin/python3.7"
