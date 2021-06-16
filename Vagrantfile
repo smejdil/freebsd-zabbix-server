@@ -64,13 +64,13 @@ Vagrant.configure("2") do |config|
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
-     pkg install -y py37-ansible
+     pkg install -y py38-ansible
      cp /etc/ssh/sshd_config /etc/ssh/sshd_config-orig
      sed -i -e "s/#PermitRootLogin no/PermitRootLogin yes/g" /etc/ssh/sshd_config
      /etc/rc.d/sshd restart
      echo freebsd | pw mod user root -h 0
-     portsnap fetch
-     portsnap extract
+     /usr/sbin/portsnap fetch
+     /usr/sbin/portsnap extract
      ifconfig em1
   SHELL
 end
