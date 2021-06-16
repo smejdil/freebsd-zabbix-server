@@ -59,7 +59,7 @@ ansible "*" -i "${VAGRANT_IP}," -u root -m ping
 sudo vim /etc/ansible/hosts
 
 [fbsd-zabbix-server]
-freebsd ansible_ssh_host=192.168.42.100 ansible_ssh_user=root
+freebsd ansible_ssh_host=192.168.42.100 ansible_ssh_user=root ansible_python_interpreter=/usr/local/bin/python3.8
 
 ansible fbsd-zabbix-server -m ping
 ```
