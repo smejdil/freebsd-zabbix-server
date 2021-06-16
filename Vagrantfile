@@ -64,7 +64,9 @@ Vagrant.configure("2") do |config|
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
-     pkg install -y py37-ansible
+     pkg install gettext-tools pkgconf libtextstyle mpdecimal postgresql12-client gmake
+     cd /usr/ports/databases/py-psycopg2 && make install clean
+     cd /usr/ports/sysutils/ansible && make install clean
      cp /etc/ssh/sshd_config /etc/ssh/sshd_config-orig
      sed -i -e "s/#PermitRootLogin no/PermitRootLogin yes/g" /etc/ssh/sshd_config
      /etc/rc.d/sshd restart
