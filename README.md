@@ -22,6 +22,8 @@ Vagrant use Vagrantfile
 ```console
 vagrant up
 vagrant ssh
+sudo su -
+portsnap fetch && portsnap extract
 ```
 - Vagrant also configure network public_network, sshd - PermitRootLogin yes, set up root password and install ansible package
 
