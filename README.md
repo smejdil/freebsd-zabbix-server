@@ -36,6 +36,7 @@ vagrant init freebsd/FreeBSD-13.0-RELEASE
 
 ```console
 VAGRANT_IP=192.168.42.100
+ssh-keygen -f "/home/malyl/.ssh/known_hosts" -R "${VAGRANT_IP}"
 cd ~/.ssh && ssh-copy-id -i id_rsa.pub root@${VAGRANT_IP}
 cd ${HOME}/work/freebsd-zabbix-server
 ```

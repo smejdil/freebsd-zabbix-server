@@ -64,15 +64,15 @@ Vagrant.configure("2") do |config|
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
-     pkg install gettext-tools pkgconf libtextstyle mpdecimal postgresql12-client gmake
-     cd /usr/ports/databases/py-psycopg2 && make install clean
-     cd /usr/ports/sysutils/ansible && make install clean
+     /usr/sbin/portsnap fetch > /dev/null
+     /usr/sbin/portsnap extract > /dev/null
+     pkg install -y py37-ansible python38 py38-setuptools
+     touch /etc/make.conf
+     echo "BATCH=yes" > /etc/make.conf
      cp /etc/ssh/sshd_config /etc/ssh/sshd_config-orig
      sed -i -e "s/#PermitRootLogin no/PermitRootLogin yes/g" /etc/ssh/sshd_config
      /etc/rc.d/sshd restart
      echo freebsd | pw mod user root -h 0
-     /usr/sbin/portsnap fetch
-     /usr/sbin/portsnap extract
      ifconfig em1
   SHELL
 end
