@@ -24,12 +24,12 @@
 
   - name: Install package php
     pkgng:
-      name: {{ php_pkg_package }}
+      name: "{{ php_pkg_package }}"
       state: present      
 
   - name: Install package for easy compilation agent, server, frontend and timescaledb
     pkgng:
-      name: {{ pkg_package }}
+      name: "{{ pkg_package }}"
       state: present
 
   - name: Install package zabbix54-agent
