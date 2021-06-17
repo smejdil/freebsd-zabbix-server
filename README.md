@@ -114,5 +114,4 @@ ansible-playbook configure-zabbix.yml
 
 ### ToDo
 
-- write zabbix-server-tsdb.yml
-- solve problem with recompilation packages
+- Fix problem with import data.sql and timescaledb.sql (py38-psycopg2) largre SQL
