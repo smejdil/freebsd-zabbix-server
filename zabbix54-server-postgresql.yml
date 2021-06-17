@@ -146,7 +146,9 @@
 
   - name: Create user zabbix
     postgresql_user:
+      db: postgres
       name: zabbix
+      password: {{ pgsql_zabbix_password }}
       state: present
 
   - name: Create a directory /data/pgsql for tablespace
@@ -191,7 +193,7 @@
 #      db: zabbix
 #      path_to_script: /usr/local/share/zabbix54/server/database/postgresql/data.sql
 
-  - name: Import Zabbix data.sql by shell :-(
+  - name: Import Zabbix data.sql by shell
     shell: psql zabbix < /usr/local/share/zabbix54/server/database/postgresql/data.sql
 
   - name: Install package timescaledb
@@ -217,13 +219,20 @@
       db: zabbix
       query: CREATE EXTENSION IF NOT EXISTS timescaledb CASCADE
 
+# Import failed :-(
 #  - name: Import Zabbix timescaledb.sql from SQL script
 #    postgresql_query:
 #      db: zabbix
 #      path_to_script: /usr/local/share/zabbix54/server/database/postgresql/timescaledb.sql
 
-  - name: Import Zabbix timescaledb.sql by shell :-(
+  - name: Import Zabbix timescaledb.sql by shell
     shell: psql zabbix < /usr/local/share/zabbix54/server/database/postgresql/timescaledb.sql
+
+  - name: Edit zabbix_server.conf DBSchema=
+    lineinfile:
+      path: /usr/local/etc/zabbix54/zabbix_server.conf
+      regexp: ^# DBSchema=.*
+      line: DBSchema=public
 
   - name: Edit zabbix_server.conf DBPassword=
     lineinfile:
