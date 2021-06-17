@@ -1,5 +1,5 @@
 ---
-- name: Using General, Buildin collection  
+- name: Zabbix server instalation on FreeBSD
   hosts: fbsd-zabbix-server
   remote_user: root
   collections:
@@ -24,12 +24,12 @@
 
   - name: Install package php
     pkgng:
-      name: mod_php74, php74, php74-bcmath, php74-ctype, php74-dom, php74-fileinfo, php74-filter, php74-gd, php74-gettext, php74-json, php74-ldap, php74-mbstring, php74-openssl, php74-session, php74-simplexml, php74-snmp, php74-sockets, php74-xml, php74-xmlreader, php74-xmlwriter, php74-pgsql
+      name: {{ php_pkg_package }}
       state: present      
 
   - name: Install package for easy compilation agent, server, frontend and timescaledb
     pkgng:
-      name: pkgconf, fping, autoconf, gmake, cmake, re2c, texinfo, m4, help2man, unixODBC, net-snmp, libevent, curl, perl5, portupgrade, libunwind, libedit, php74, openipmi, libtextstyle, gettext-tools, mpdecimal, ninja
+      name: {{ pkg_package }}
       state: present
 
   - name: Install package zabbix54-agent
@@ -47,7 +47,7 @@
 
   - name: Copy zabbix54-server build options
     copy:
-      src: ./files/net-mgmt_zabbix54-server_options
+      src: files/net-mgmt_zabbix54-server_options
       dest: /var/db/ports/net-mgmt_zabbix54-server/options
       owner: root
       group: wheel
@@ -67,7 +67,7 @@
 
   - name: Copy zabbix54-frontend build options
     copy:
-      src: ./files/net-mgmt_zabbix54-frontend_options
+      src: files/net-mgmt_zabbix54-frontend_options
       dest: /var/db/ports/net-mgmt_zabbix54-frontend/options
       owner: root
       group: wheel
@@ -104,14 +104,14 @@
 
   - name: Copy sample zabbix_agentd.conf
     copy:
-      src: ./conf/zabbix54_agentd.conf.sample
+      src: conf/zabbix54_agentd.conf.sample
       dest: /usr/local/etc/zabbix54/zabbix_agentd.conf
       owner: root
       group: wheel
 
   - name: Copy sample zabbix_server.conf
     copy:
-      src: ./conf/zabbix54_server.conf.sample
+      src: conf/zabbix54_server.conf.sample
       dest: /usr/local/etc/zabbix54/zabbix_server.conf
       owner: root
       group: wheel
@@ -147,7 +147,7 @@
   - name: Create user zabbix
     postgresql_user:
       db: postgres
-      name: zabbix
+      name: "{{ pgsql_zabbix_user }}"
       password: "{{ pgsql_zabbix_password }}"
       state: present
 
@@ -161,45 +161,45 @@
 
   - name: Create a new tablespace called zabbix and set zabbix as an its owner
     postgresql_tablespace:
-      name: zabbix
-      owner: zabbix
+      name: "{{ pgsql_zabbix_tablespace }}"
+      owner: "{{ pgsql_zabbix_user }}"
       location: /data/pgsql
 
   - name: Create a new database with name 'zabbix'
     postgresql_db:
-      name: zabbix
-      tablespace: zabbix
-      owner: zabbix
+      name: "{{ pgsql_zabbix_db }}"
+      tablespace: "{{ pgsql_zabbix_tablespace }}"
+      owner: "{{ pgsql_zabbix_user }}"
       encoding: UTF-8
       state: present
 
   - name: Import Zabbix schema.sql from SQL script
     postgresql_query:
-      db: zabbix
-      login_user: zabbix
+      db: "{{ pgsql_zabbix_db }}"
+      login_user: "{{ pgsql_zabbix_user }}"
       path_to_script: /usr/local/share/zabbix54/server/database/postgresql/schema.sql
 
   - name: Import Zabbix images.sql from SQL script
     postgresql_query:
-      db: zabbix
-      login_user: zabbix
+      db: "{{ pgsql_zabbix_db }}"
+      login_user: "{{ pgsql_zabbix_user }}"
       path_to_script: /usr/local/share/zabbix54/server/database/postgresql/images.sql
 
   - name: Import Zabbix double.sql from SQL script
     postgresql_query:
-      db: zabbix
-      login_user: zabbix
+      db: "{{ pgsql_zabbix_db }}"
+      login_user: "{{ pgsql_zabbix_user }}"
       path_to_script: /usr/local/share/zabbix54/server/database/postgresql/double.sql
 
-# Import failed :-(
+# Import failed row 27 :-(
 #  - name: Import Zabbix data.sql from SQL script
 #    postgresql_query:
-#      db: zabbix
-#      login_user: zabbix
+#      db: "{{ pgsql_zabbix_db }}"
+#      login_user: "{{ pgsql_zabbix_user }}"
 #      path_to_script: /usr/local/share/zabbix54/server/database/postgresql/data.sql
 
   - name: Import Zabbix data.sql by shell
-    shell: psql zabbix < /usr/local/share/zabbix54/server/database/postgresql/data.sql
+    shell: psql "{{ pgsql_zabbix_db }}" < /usr/local/share/zabbix54/server/database/postgresql/data.sql
 
   - name: Install package timescaledb
     portinstall:
@@ -208,7 +208,7 @@
 
   - name: Config file templates/postgresql.conf
     template:
-      src: "./templates/postgresql.conf.j2"
+      src: "templates/postgresql.conf.j2"
       dest: "/var/db/postgres/data12/postgresql.conf"
       owner: postgres
       group: postgres
@@ -221,24 +221,36 @@
 
   - name: Create extension TimescaleDB
     postgresql_query:
-      db: zabbix
+      db: "{{ pgsql_zabbix_db }}"
       query: CREATE EXTENSION IF NOT EXISTS timescaledb CASCADE
 
-# Import failed :-(
+# Import failed tab in rows :-(
 #  - name: Import Zabbix timescaledb.sql from SQL script
 #    postgresql_query:
-#      db: zabbix
-#      login_user: zabbix
+#      db: "{{ pgsql_zabbix_db }}"
+#      login_user: "{{ pgsql_zabbix_user }}"
 #      path_to_script: /usr/local/share/zabbix54/server/database/postgresql/timescaledb.sql
 
   - name: Import Zabbix timescaledb.sql by shell
-    shell: psql zabbix < /usr/local/share/zabbix54/server/database/postgresql/timescaledb.sql
+    shell: psql "{{ pgsql_zabbix_db }}" < /usr/local/share/zabbix54/server/database/postgresql/timescaledb.sql
+
+  - name: Edit zabbix_server.conf DBName=
+    lineinfile:
+      path: /usr/local/etc/zabbix54/zabbix_server.conf
+      regexp: ^DBName=.*
+      line: DBName={{ pgsql_zabbix_db }}
 
   - name: Edit zabbix_server.conf DBSchema=
     lineinfile:
       path: /usr/local/etc/zabbix54/zabbix_server.conf
       regexp: ^# DBSchema=.*
       line: DBSchema=public
+
+  - name: Edit zabbix_server.conf DBUser=
+    lineinfile:
+      path: /usr/local/etc/zabbix54/zabbix_server.conf
+      regexp: ^DBUser=.*
+      line: DBUser=={{ pgsql_zabbix_user }}
 
   - name: Edit zabbix_server.conf DBPassword=
     lineinfile:
@@ -253,19 +265,19 @@
 
   - name: Copy zabbix.conf
     copy:
-      src: ./conf/zabbix54.conf
+      src: conf/zabbix54.conf
       dest: /usr/local/etc/apache24/Includes/zabbix.conf
       owner: root
       group: wheel
 
   - name: Apply patch to file httpd.conf
     patch:
-      src: ./files/httpd.conf.patch
+      src: files/httpd.conf.patch
       dest: /usr/local/etc/apache24/httpd.conf
 
   - name: Config file zabbix.conf.php
     template:
-      src: "./templates/zabbix54.conf.php.j2"
+      src: "templates/zabbix54.conf.php.j2"
       dest: "/usr/local/www/zabbix54/conf/zabbix.conf.php"
       owner: www
       group: www
