@@ -250,7 +250,7 @@
     lineinfile:
       path: /usr/local/etc/zabbix54/zabbix_server.conf
       regexp: ^DBUser=.*
-      line: DBUser=={{ pgsql_zabbix_user }}
+      line: DBUser={{ pgsql_zabbix_user }}
 
   - name: Edit zabbix_server.conf DBPassword=
     lineinfile:
