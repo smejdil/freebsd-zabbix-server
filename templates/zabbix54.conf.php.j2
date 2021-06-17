@@ -1,12 +1,12 @@
 <?php
 // Zabbix GUI configuration file.
 
-$DB['TYPE']				= 'MYSQL';
+$DB['TYPE']				= '{{ db_type }}';
 $DB['SERVER']			= 'localhost';
 $DB['PORT']				= '0';
 $DB['DATABASE']			= 'zabbix';
 $DB['USER']				= 'zabbix';
-$DB['PASSWORD']			= '{{ mysql_zabbix_password }}';
+$DB['PASSWORD']			= '{{ pgsql_zabbix_password }}';
 
 // Schema name. Used for PostgreSQL.
 $DB['SCHEMA']			= '';

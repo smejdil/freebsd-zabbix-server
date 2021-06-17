@@ -4,6 +4,7 @@
 server_url: http://localhost/zabbix/
 zabbix_server: 127.0.0.1
 snmp_community: "{$SNMP_COMMUNITY}"
+db_type: "POSTGRESQL"				# MYSQL or POSTGRESQL
 mysql_root_password: Zabbix_MySQL_57
 mysql_zabbix_password: Monitoring=Zabbix
 pgsql_zabbix_password: Monitoring=Zabbix
