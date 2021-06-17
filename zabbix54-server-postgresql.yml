@@ -148,7 +148,7 @@
     postgresql_user:
       db: postgres
       name: zabbix
-      password: {{ pgsql_zabbix_password }}
+      password: "{{ pgsql_zabbix_password }}"
       state: present
 
   - name: Create a directory /data/pgsql for tablespace
