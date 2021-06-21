@@ -55,6 +55,7 @@
   - name: Install package zabbix52-server
     portinstall:
       name: net-mgmt/zabbix52-server
+      use_packages: no
       state: present
 
   - name: Create a directory net-mgmt_zabbix52-frontend if it does not exist
@@ -75,11 +76,13 @@
   - name: Install package zabbix52-frontend
     portinstall:
       name: net-mgmt/zabbix52-frontend
+      use_packages: no
       state: present
 
   - name: Install package py-psycopg2
     portinstall:
       name: databases/py-psycopg2
+      use_packages: no
       state: present
 
   - name: Enable service zabbix_agentd, and not touch the state
@@ -204,6 +207,7 @@
   - name: Install package timescaledb
     portinstall:
       name: databases/timescaledb
+      use_packages: no
       state: present
 
   - name: Config file templates/postgresql.conf

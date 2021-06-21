@@ -76,11 +76,13 @@
   - name: Install package zabbix5-frontend
     portinstall:
       name: net-mgmt/zabbix5-frontend
+      use_packages: no
       state: present
 
   - name: Install package py-psycopg2
     portinstall:
       name: databases/py-psycopg2
+      use_packages: no
       state: present
 
   - name: Enable service zabbix_agentd, and not touch the state
@@ -205,6 +207,7 @@
   - name: Install package timescaledb
     portinstall:
       name: databases/timescaledb
+      use_packages: no
       state: present
 
   - name: Config file templates/postgresql.conf
