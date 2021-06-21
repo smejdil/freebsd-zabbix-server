@@ -55,6 +55,7 @@
   - name: Install package zabbix5-server
     portinstall:
       name: net-mgmt/zabbix5-server
+      use_packages: no
       state: present
 
   - name: Create a directory net-mgmt_zabbix5-frontend if it does not exist
