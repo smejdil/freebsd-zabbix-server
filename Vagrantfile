@@ -37,7 +37,7 @@ Vagrant.configure("2") do |config|
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
   # your network.
-  config.vm.network "public_network"
+  config.vm.network "public_network", bridge: "wlp2s0"
 
   # Share an additional folder to the guest VM. The first argument is
   # the path on the host to the actual folder. The second argument is
@@ -60,10 +60,13 @@ Vagrant.configure("2") do |config|
   # View the documentation for the provider you are using for more
   # information on available options.
 
+  config.vm.provision "file", source: "~/.ssh/id_ed25519.pub", destination: "~/.ssh/me.pub"
+
   # Enable provisioning with a shell script. Additional provisioners such as
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
+     cat /home/vagrant/.ssh/me.pub >> /home/vagrant/.ssh/authorized_keys
      /usr/sbin/portsnap fetch > /dev/null
      /usr/sbin/portsnap extract > /dev/null
      pkg install -y py37-ansible python38 py38-setuptools
