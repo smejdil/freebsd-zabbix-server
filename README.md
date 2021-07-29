@@ -15,13 +15,17 @@ timescaledb-2.3.1 on OS FreeBSD 13.
 
 ## How it works
 
-On Linux desktop run vagrant with VirtualBox. For test install and configure
+On Linux desktop run vagrant with vagrant-libvirt and vagrant-disksize. For test install and configure
 zabbix_server and other component by ansible on FreeBSD 13
 
 ### Installation test evnviroment FreeBSD
 
-Vagrant use Vagrantfile
+For ready function Vagrantfile is need use plugin vagrant-disksize
 
+```console
+vagrant plugin install vagrant-disksize
+```
+Vagrant use Vagrantfile
 ```console
 vagrant up
 vagrant ssh
@@ -47,10 +51,12 @@ cd ${HOME}/work/freebsd-zabbix-server
 ```
 - test Ansible communication
 ```console
+ln -s /usr/local/bin/python3.8 /usr/bin/python
+
 ansible "*" -i "${VAGRANT_IP}," -u root -m ping
 192.168.42.100 | SUCCESS => {
     "ansible_facts": {
-        "discovered_interpreter_python": "/usr/local/bin/python3.7"
+        "discovered_interpreter_python": "/usr/bin/python"
     },
     "changed": false,
     "ping": "pong"
