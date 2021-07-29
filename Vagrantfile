@@ -69,7 +69,7 @@ Vagrant.configure("2") do |config|
      cat /home/vagrant/.ssh/me.pub >> /home/vagrant/.ssh/authorized_keys
      /usr/sbin/portsnap fetch > /dev/null
      /usr/sbin/portsnap extract > /dev/null
-     pkg install -y py37-ansible python38 py38-setuptools
+     pkg install -y py38-ansible python38 py38-setuptools
      touch /etc/make.conf
      echo "BATCH=yes" > /etc/make.conf
      cp /etc/ssh/sshd_config /etc/ssh/sshd_config-orig
