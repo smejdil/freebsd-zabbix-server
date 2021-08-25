@@ -118,6 +118,18 @@ ZABBIX_SERVER=http://192.168.5.200/zabbix/
 ansible-playbook configure-zabbix.yml
 ```
 
+## Postinstall upgrade package
+
+- Upgrade package from ports
+- php - php74-7.4.22_1
+- postgresql - postgresql12-server-12.8
+- ansible - py38-ansible-4.3.0
+
+```console
+portsnap fetch && portsnap update && pkg version -v | grep upd
+portupgrade -a
+```
+
 ### ToDo
 
 - Fix problem with import data.sql and timescaledb.sql (py38-psycopg2) largre SQL
