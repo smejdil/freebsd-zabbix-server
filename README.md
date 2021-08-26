@@ -43,7 +43,7 @@ vagrant init freebsd/FreeBSD-13.0-RELEASE
 
 ```console
 gcloud config set project zabbix-test
-gcloud compute instances create zabbix-server --image freebsd-13-0-release-amd64 --image-project=freebsd-org-cloud-dev --zone=europe-central2-a startup-script=./scripts/install-gcp.sh
+gcloud compute instances create zabbix-server --image freebsd-13-0-release-amd64 --image-project=freebsd-org-cloud-dev --zone=europe-central2-a --metadata-from-file startup-script=./scripts/install-gcp.sh
 gcloud compute instances add-tags zabbix-server --tags=http-server --zone=europe-central2-a
 gcloud compute ssh zabbix-server --zone=europe-central2-a
 ```
