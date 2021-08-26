@@ -32,17 +32,17 @@
       name: pkgconf, fping, autoconf, gmake, re2c, texinfo, m4, help2man, unixODBC, net-snmp, libevent, curl, perl5, portupgrade, libunwind, libedit, php74
       state: present
 
-  - name: Install package zabbix54-agent
+  - name: Install port zabbix54-agent
     portinstall:
       name: net-mgmt/zabbix54-agent
       state: present
 
-  - name: Install package zabbix54-server
+  - name: Install port zabbix54-server
     portinstall:
       name: net-mgmt/zabbix54-server
       state: present
 
-  - name: Install package zabbix54-frontend
+  - name: Install port zabbix54-frontend
     portinstall:
       name: net-mgmt/zabbix54-frontend
       state: present
