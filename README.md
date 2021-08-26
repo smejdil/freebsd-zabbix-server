@@ -1,7 +1,7 @@
 ## FreeBSD Zabbix Server
 
 This small project is used for install zabbix[5|52|54]_agent, zabbix[5|52|54]_frontend and
-zabbix[5|52|54]_server with mysql57-server or postgresql12-server with
+zabbix[5|52|54]_server with mysql57-server or postgresql13-server with
 timescaledb-2.4.1 on OS FreeBSD 13.
 
 ## Dependencies
@@ -10,15 +10,15 @@ timescaledb-2.4.1 on OS FreeBSD 13.
 - Packahe apache - apache24-2.4.48 - Version 2.4.x of Apache web server
 - Package php - php74-7.4.22 - PHP Scripting Language
 - Package mysql - mysql57-server-5.7.33 - Multithreaded SQL database (server)
-- Package postgresql - postgresql12-server-12.7_1 - PostgreSQL is the most advanced open-source database available anywhere
+- Package postgresql - postgresql12-server-13.3 - PostgreSQL is the most advanced open-source database available anywhere
 - Package timescaledb - timescaledb-2.4.1 - Time-series database built on PostgreSQL
 
 ## How it works
 
 On Linux desktop run vagrant with vagrant-libvirt and vagrant-disksize. For test install and configure
-zabbix_server and other component by ansible on FreeBSD 13
+zabbix_server and other component by ansible on FreeBSD 13. Or use GCP.
 
-### Installation test evnviroment FreeBSD
+### Installation Vagrant test evnviroment FreeBSD
 
 For ready function Vagrantfile is need use plugin vagrant-disksize
 
@@ -39,9 +39,18 @@ The Vagrantfile was initialized as follows.
 vagrant init freebsd/FreeBSD-13.0-RELEASE
 ```
 
-### Installation Desktop
+### Installation GCP test evnviroment FreeBSD
 
-- install ssh public key to FreeBSD
+```console
+gcloud config set project zabbix-test
+gcloud compute instances create zabbix-server --image freebsd-13-0-release-amd64 --image-project=freebsd-org-cloud-dev --zone=europe-central2-a startup-script=./scripts/install-gcp.sh
+gcloud compute instances add-tags zabbix-server --tags=http-server --zone=europe-central2-a
+gcloud compute ssh zabbix-server --zone=europe-central2-a
+```
+
+### Installation Desktop evnviroment
+
+- install ssh public key to FreeBSD for Vagrant
 
 ```console
 VAGRANT_IP=192.168.42.100
@@ -49,7 +58,7 @@ ssh-keygen -f "${HOME}/.ssh/known_hosts" -R "${VAGRANT_IP}"
 cd ~/.ssh && ssh-copy-id -i id_rsa.pub root@${VAGRANT_IP}
 cd ${HOME}/work/freebsd-zabbix-server
 ```
-- test Ansible communication
+- test Ansible communication for Vagrant
 ```console
 ansible "*" -i "${VAGRANT_IP}," -u root -m ping
 192.168.42.100 | SUCCESS => {
@@ -96,11 +105,11 @@ ansible-galaxy collection install -r requirements.yml
 - ansible use module community.general.portinstall
 
 ```console
-ansible-playbook playbook/zabbix5-server-mysql.yml
-ansible-playbook playbook/zabbix52-server-mysql.yml
-ansible-playbook playbook/zabbix54-server-mysql.yml
+ansible-playbook playbooks/zabbix5-server-mysql.yml
+ansible-playbook playbooks/zabbix52-server-mysql.yml
+ansible-playbook playbooks/zabbix54-server-mysql.yml
 
-ansible-playbook playbook/zabbix54-server-postgresql.yml
+ansible-playbook playbooks/zabbix54-server-postgresql.yml
 ```
 
 ```console
@@ -113,14 +122,14 @@ Admin/zabbix
 ```console
 ZABBIX_SERVER=http://192.168.5.200/zabbix/
 
-ansible-playbook playbook/configure-zabbix.yml
+ansible-playbook playbooks/configure-zabbix.yml
 ```
 
 ## Postinstall upgrade package
 
 - Upgrade package from ports
 - php - php74-7.4.22_1
-- postgresql - postgresql12-server-12.8
+- postgresql - postgresql12-server-13-4
 - ansible - py38-ansible-4.3.0
 
 ```console
