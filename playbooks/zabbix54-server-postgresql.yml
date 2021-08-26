@@ -27,7 +27,7 @@
       name: "{{ php_pkg_package }}"
       state: present      
 
-  - name: Install package php74-pgsql
+  - name: Install port php74-pgsql
     portinstall:
       name: databases/php74-pgsql
       state: present
@@ -37,7 +37,7 @@
       name: "{{ pkg_package }}"
       state: present
 
-  - name: Install package zabbix54-agent
+  - name: Install port zabbix54-agent
     portinstall:
       name: net-mgmt/zabbix54-agent
       state: present
@@ -57,7 +57,7 @@
       owner: root
       group: wheel
   
-  - name: Install package zabbix54-server
+  - name: Install port zabbix54-server
     portinstall:
       name: net-mgmt/zabbix54-server
       use_packages: no
@@ -78,13 +78,13 @@
       owner: root
       group: wheel
 
-  - name: Install package zabbix54-frontend
+  - name: Install port zabbix54-frontend
     portinstall:
       name: net-mgmt/zabbix54-frontend
       use_packages: no
       state: present
 
-  - name: Install package py-psycopg2
+  - name: Install port py-psycopg2
     portinstall:
       name: databases/py-psycopg2
       use_packages: no
@@ -209,7 +209,7 @@
   - name: Import Zabbix data.sql by shell
     shell: psql "{{ pgsql_zabbix_db }}" < /usr/local/share/zabbix54/server/database/postgresql/data.sql
 
-  - name: Install package timescaledb
+  - name: Install port timescaledb
     portinstall:
       name: databases/timescaledb
       use_packages: no
