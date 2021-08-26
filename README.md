@@ -96,11 +96,11 @@ ansible-galaxy collection install -r requirements.yml
 - ansible use module community.general.portinstall
 
 ```console
-ansible-playbook zabbix5-server-mysql.yml
-ansible-playbook zabbix52-server-mysql.yml
-ansible-playbook zabbix54-server-mysql.yml
+ansible-playbook playbook/zabbix5-server-mysql.yml
+ansible-playbook playbook/zabbix52-server-mysql.yml
+ansible-playbook playbook/zabbix54-server-mysql.yml
 
-ansible-playbook zabbix54-server-postgresql.yml
+ansible-playbook playbook/zabbix54-server-postgresql.yml
 ```
 
 ```console
@@ -113,7 +113,7 @@ Admin/zabbix
 ```console
 ZABBIX_SERVER=http://192.168.5.200/zabbix/
 
-ansible-playbook configure-zabbix.yml
+ansible-playbook playbook/configure-zabbix.yml
 ```
 
 ## Postinstall upgrade package
