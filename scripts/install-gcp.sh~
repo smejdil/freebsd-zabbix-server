@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# ports
+portsnap fetch && portsnap extract
+
+#
+
+# EOF
