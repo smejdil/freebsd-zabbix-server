@@ -51,8 +51,6 @@ cd ${HOME}/work/freebsd-zabbix-server
 ```
 - test Ansible communication
 ```console
-ln -s /usr/local/bin/python3.8 /usr/bin/python
-
 ansible "*" -i "${VAGRANT_IP}," -u root -m ping
 192.168.42.100 | SUCCESS => {
     "ansible_facts": {

@@ -71,6 +71,7 @@ Vagrant.configure("2") do |config|
      /usr/sbin/portsnap fetch > /dev/null
      /usr/sbin/portsnap extract > /dev/null
      pkg install -y py38-ansible python38 py38-setuptools
+     ln -s /usr/local/bin/python3.8 /usr/bin/python
      touch /etc/make.conf
      echo "BATCH=yes" > /etc/make.conf
      cp /etc/ssh/sshd_config /etc/ssh/sshd_config-orig
