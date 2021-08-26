@@ -10,7 +10,7 @@ timescaledb-2.4.1 on OS FreeBSD 13.
 - Packahe apache - apache24-2.4.48 - Version 2.4.x of Apache web server
 - Package php - php74-7.4.22 - PHP Scripting Language
 - Package mysql - mysql57-server-5.7.33 - Multithreaded SQL database (server)
-- Package postgresql - postgresql12-server-13.3 - PostgreSQL is the most advanced open-source database available anywhere
+- Package postgresql - postgresql13-server-13.3 - PostgreSQL is the most advanced open-source database available anywhere
 - Package timescaledb - timescaledb-2.4.1 - Time-series database built on PostgreSQL
 
 ## How it works
@@ -129,7 +129,7 @@ ansible-playbook playbooks/configure-zabbix.yml
 
 - Upgrade package from ports
 - php - php74-7.4.22_1
-- postgresql - postgresql12-server-13-4
+- postgresql - postgresql13-server-13.4
 - ansible - py38-ansible-4.3.0
 
 ```console
