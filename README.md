@@ -128,7 +128,8 @@ ansible-playbook playbooks/configure-zabbix.yml
 ## Postinstall upgrade package
 
 - Upgrade package from ports
-- php - php74-7.4.22_1
+- apache24 - apache24-2.4.50
+- php - php74-7.4.24
 - postgresql - postgresql13-server-13.4
 - ansible - py38-ansible-4.3.0
 

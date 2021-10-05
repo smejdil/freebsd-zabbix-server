@@ -24,7 +24,7 @@ pgsql_zabbix_db: zabbix
 shared_preload_libraries: timescaledb
 
 # Package
-pkg_package: pkgconf, fping, autoconf, gmake, cmake, re2c, texinfo, m4, help2man, unixODBC, net-snmp, libevent, curl, perl5, portupgrade, libunwind, libedit, php74, openipmi, libtextstyle, gettext-tools, mpdecimal, ninja
+pkg_package: pkgconf, fping, autoconf, autoconf-wrapper, gmake, cmake, re2c, texinfo, m4, help2man, unixODBC, net-snmp, libevent, curl, perl5, portupgrade, libunwind, libedit, php74, openipmi, libtextstyle, gettext-tools, mpdecimal, ninja
 php_pkg_package: mod_php74, php74, php74-bcmath, php74-ctype, php74-dom, php74-fileinfo, php74-filter, php74-gd, php74-gettext, php74-json, php74-ldap, php74-mbstring, php74-openssl, php74-session, php74-simplexml, php74-snmp, php74-sockets, php74-xml, php74-xmlreader, php74-xmlwriter
 
 # EOF
