@@ -12,9 +12,9 @@
     - vars/vars.yml
 
   tasks:
-  - name: Install package postgresql13-server
+  - name: Install package postgresql14-server
     pkgng:
-      name: postgresql13-server
+      name: postgresql14-server
       state: present
 
   - name: Install package apache24
@@ -218,7 +218,7 @@
   - name: Config file templates/postgresql.conf
     template:
       src: "templates/postgresql.conf.j2"
-      dest: "/var/db/postgres/data13/postgresql.conf"
+      dest: "/var/db/postgres/data14/postgresql.conf"
       owner: postgres
       group: postgres
       mode: 0400
