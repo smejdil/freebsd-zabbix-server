@@ -2,7 +2,7 @@
 
 This small project is used for install zabbix[5|54]_agent, zabbix[5|54]_frontend and
 zabbix[5|54]_server with mysql57-server or postgresql14-server with
-timescaledb-2.5.0 on OS FreeBSD 14.
+timescaledb-2.5.0 on OS FreeBSD 13.0-RELEASE-p4.
 
 ## Dependencies
 
