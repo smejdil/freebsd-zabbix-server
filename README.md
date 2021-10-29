@@ -1,12 +1,12 @@
 ## FreeBSD Zabbix Server
 
-This small project is used for install zabbix[5|52|54]_agent, zabbix[5|52|54]_frontend and
-zabbix[5|52|54]_server with mysql57-server or postgresql14-server with
+This small project is used for install zabbix[5|54]_agent, zabbix[5|54]_frontend and
+zabbix[5|54]_server with mysql57-server or postgresql14-server with
 timescaledb-2.5.0 on OS FreeBSD 14.
 
 ## Dependencies
 
-- Package zabbix - zabbix[5|52|54]-server
+- Package zabbix - zabbix[5|54]-server
 - Packahe apache - apache24-2.4.51 - Version 2.4.x of Apache web server
 - Package php - php74-7.4.25 - PHP Scripting Language
 - Package mysql - mysql57-server-5.7.35 - Multithreaded SQL database (server)
@@ -106,7 +106,6 @@ ansible-galaxy collection install -r requirements.yml
 
 ```console
 ansible-playbook playbooks/zabbix5-server-mysql.yml
-ansible-playbook playbooks/zabbix52-server-mysql.yml
 ansible-playbook playbooks/zabbix54-server-mysql.yml
 
 ansible-playbook playbooks/zabbix54-server-postgresql.yml
