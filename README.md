@@ -2,16 +2,16 @@
 
 This small project is used for install zabbix[5|54]_agent, zabbix[5|54]_frontend and
 zabbix[5|54]_server with mysql57-server or postgresql14-server with
-timescaledb-2.5.0 on OS FreeBSD 13.0-RELEASE-p4.
+timescaledb-2.5.1 on OS FreeBSD 13.0-RELEASE-p4.
 
 ## Dependencies
 
 - Package zabbix - zabbix[5|54]-server
 - Packahe apache - apache24-2.4.51 - Version 2.4.x of Apache web server
-- Package php - php74-7.4.25 - PHP Scripting Language
+- Package php - php74-7.4.26 - PHP Scripting Language
 - Package mysql - mysql57-server-5.7.35 - Multithreaded SQL database (server)
-- Package postgresql - postgresql14-server-14.0 - PostgreSQL is the most advanced open-source database available anywhere
-- Package timescaledb - timescaledb-2.5.0 - Time-series database built on PostgreSQL
+- Package postgresql - postgresql14-server-14.1 - PostgreSQL is the most advanced open-source database available anywhere
+- Package timescaledb - timescaledb-2.5.1 - Time-series database built on PostgreSQL
 
 ## How it works
 
@@ -129,7 +129,7 @@ ansible-playbook playbooks/configure-zabbix.yml
 - Upgrade package from ports
 - apache24 - apache24-2.4.51
 - php - php74-7.4.25
-- postgresql - postgresql14-server-14.0
+- postgresql - postgresql14-server-14.1
 - ansible - py38-ansible-4.7.0
 
 ```console
