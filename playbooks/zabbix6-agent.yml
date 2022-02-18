@@ -7,9 +7,9 @@
     - ansible.builtin
   
   tasks:
-  - name: Install package zabbix54-agent
+  - name: Install package zabbix6-agent
     portinstall:
-      name: net-mgmt/zabbix54-agent
+      name: net-mgmt/zabbix6-agent
       state: present
 
   - name: Enable service zabbix_agentd, and not touch the state
@@ -19,24 +19,24 @@
 
   - name: Copy sample zabbix_agentd.conf
     copy:
-      src: ./conf/zabbix5_agentd.conf.sample
-      dest: /usr/local/etc/zabbix54/zabbix_agentd.conf
+      src: ./conf/zabbix6_agentd.conf.sample
+      dest: /usr/local/etc/zabbix6/zabbix_agentd.conf
       owner: root
       group: wheel
 
   - name: Edit  agent hostname
     lineinfile:
-      path: /usr/local/etc/zabbix54/zabbix_agentd.conf
+      path: /usr/local/etc/zabbix6/zabbix_agentd.conf
       regexp: ^Hostname=.*
       line: Hostname={{ ansible_fqdn }}
 
   - name: Edit agent server
     lineinfile:
-      path: /usr/local/etc/zabbix54/zabbix_agentd.conf
+      path: /usr/local/etc/zabbix6/zabbix_agentd.conf
       regexp: ^Server=.*
       line: Server={{ zabbix_server }}
 
-  - name: Start service zabbix54-agent, if not started
+  - name: Start service zabbix6-agent, if not started
     service:
       name: zabbix_agentd
       state: started

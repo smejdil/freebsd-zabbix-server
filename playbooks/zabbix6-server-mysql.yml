@@ -32,19 +32,19 @@
       name: pkgconf, fping, autoconf, gmake, re2c, texinfo, m4, help2man, unixODBC, net-snmp, libevent, curl, perl5, portupgrade, libunwind, libedit, php74
       state: present
 
-  - name: Install port zabbix54-agent
+  - name: Install port zabbix6-agent
     portinstall:
-      name: net-mgmt/zabbix54-agent
+      name: net-mgmt/zabbix6-agent
       state: present
 
-  - name: Install port zabbix54-server
+  - name: Install port zabbix6-server
     portinstall:
-      name: net-mgmt/zabbix54-server
+      name: net-mgmt/zabbix6-server
       state: present
 
-  - name: Install port zabbix54-frontend
+  - name: Install port zabbix6-frontend
     portinstall:
-      name: net-mgmt/zabbix54-frontend
+      name: net-mgmt/zabbix6-frontend
       state: present
 
   - name: Install package py37-mysqlclient
@@ -74,31 +74,31 @@
 
   - name: Copy sample zabbix_agentd.conf
     copy:
-      src: ./conf/zabbix54_agentd.conf.sample
-      dest: /usr/local/etc/zabbix54/zabbix_agentd.conf
+      src: ./conf/zabbix6_agentd.conf.sample
+      dest: /usr/local/etc/zabbix6/zabbix_agentd.conf
       owner: root
       group: wheel
 
   - name: Copy sample zabbix_server.conf
     copy:
-      src: ./conf/zabbix54_server.conf.sample
-      dest: /usr/local/etc/zabbix54/zabbix_server.conf
+      src: ./conf/zabbix6_server.conf.sample
+      dest: /usr/local/etc/zabbix6/zabbix_server.conf
       owner: root
       group: wheel
 
   - name: Edit zabbix_agentd.conf Hostname=
     lineinfile:
-      path: /usr/local/etc/zabbix54/zabbix_agentd.conf
+      path: /usr/local/etc/zabbix6/zabbix_agentd.conf
       regexp: ^Hostname=.*
       line: Hostname={{ ansible_fqdn }}
 
   - name: Edit zabbix_agentd.conf Server=
     lineinfile:
-      path: /usr/local/etc/zabbix54/zabbix_agentd.conf
+      path: /usr/local/etc/zabbix6/zabbix_agentd.conf
       regexp: ^Server=.*
       line: Server={{ zabbix_server }}
 
-  - name: Start service zabbix54-agent, if not started
+  - name: Start service zabbix6-agent, if not started
     service:
       name: zabbix_agentd
       state: started
@@ -145,43 +145,43 @@
       state: import
       name: zabbix
       encoding: utf8
-      target: /usr/local/share/zabbix54/server/database/mysql/schema.sql
+      target: /usr/local/share/zabbix6/server/database/mysql/schema.sql
 
   - name: Import zabbix images.sql
     mysql_db:
       state: import
       name: zabbix
       encoding: utf8
-      target: /usr/local/share/zabbix54/server/database/mysql/images.sql
+      target: /usr/local/share/zabbix6/server/database/mysql/images.sql
 
   - name: Import zabbix data.sql
     mysql_db:
       state: import
       name: zabbix
       encoding: utf8
-      target: /usr/local/share/zabbix54/server/database/mysql/data.sql
+      target: /usr/local/share/zabbix6/server/database/mysql/data.sql
 
   - name: Import zabbix double.sql
     mysql_db:
       state: import
       name: zabbix
       encoding: utf8
-      target: /usr/local/share/zabbix54/server/database/mysql/double.sql
+      target: /usr/local/share/zabbix6/server/database/mysql/double.sql
 
   - name: Edit zabbix_server.conf DBPassword=
     lineinfile:
-      path: /usr/local/etc/zabbix54/zabbix_server.conf
+      path: /usr/local/etc/zabbix6/zabbix_server.conf
       regexp: ^# DBPassword=.*
       line: DBPassword={{ mysql_zabbix_password }}
 
-  - name: Start service zabbix54-server, if not started
+  - name: Start service zabbix6-server, if not started
     service:
       name: zabbix_server
       state: started
 
   - name: Copy zabbix.conf
     copy:
-      src: ./conf/zabbix54.conf
+      src: ./conf/zabbix6.conf
       dest: /usr/local/etc/apache24/Includes/zabbix.conf
       owner: root
       group: wheel
@@ -193,8 +193,8 @@
 
   - name: Config file zabbix.conf.php
     template:
-      src: "./templates/zabbix54.conf.php.j2"
-      dest: "/usr/local/www/zabbix54/conf/zabbix.conf.php"
+      src: "./templates/zabbix6.conf.php.j2"
+      dest: "/usr/local/www/zabbix6/conf/zabbix.conf.php"
       owner: www
       group: www
       mode: 0400

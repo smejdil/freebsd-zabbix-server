@@ -12,9 +12,9 @@
     - vars/vars.yml
 
   tasks:
-  - name: Install package postgresql14-server
+  - name: Install package postgresql13-server
     pkgng:
-      name: postgresql14-server
+      name: postgresql13-server
       state: present
 
   - name: Install package apache24
@@ -37,50 +37,50 @@
       name: "{{ pkg_package }}"
       state: present
 
-  - name: Install port zabbix54-agent
+  - name: Install port zabbix6-agent
     portinstall:
-      name: net-mgmt/zabbix54-agent
+      name: net-mgmt/zabbix6-agent
       state: present
 
-  - name: Create a directory net-mgmt_zabbix54-server if it does not exist
+  - name: Create a directory net-mgmt_zabbix6-server if it does not exist
     file:
-      path: /var/db/ports/net-mgmt_zabbix54-server/
+      path: /var/db/ports/net-mgmt_zabbix6-server/
       state: directory
       owner: root
       group: wheel
       mode: 0755
 
-  - name: Copy zabbix54-server build options
+  - name: Copy zabbix6-server build options
     copy:
-      src: files/net-mgmt_zabbix54-server_options
-      dest: /var/db/ports/net-mgmt_zabbix54-server/options
+      src: files/net-mgmt_zabbix6-server_options
+      dest: /var/db/ports/net-mgmt_zabbix6-server/options
       owner: root
       group: wheel
   
-  - name: Install port zabbix54-server
+  - name: Install port zabbix6-server
     portinstall:
-      name: net-mgmt/zabbix54-server
+      name: net-mgmt/zabbix6-server
       use_packages: no
       state: present
 
-  - name: Create a directory net-mgmt_zabbix54-frontend if it does not exist
+  - name: Create a directory net-mgmt_zabbix6-frontend if it does not exist
     file:
-      path: /var/db/ports/net-mgmt_zabbix54-frontend/
+      path: /var/db/ports/net-mgmt_zabbix6-frontend/
       state: directory
       owner: root
       group: wheel
       mode: 0755
 
-  - name: Copy zabbix54-frontend build options
+  - name: Copy zabbix6-frontend build options
     copy:
-      src: files/net-mgmt_zabbix54-frontend_options
-      dest: /var/db/ports/net-mgmt_zabbix54-frontend/options
+      src: files/net-mgmt_zabbix6-frontend_options
+      dest: /var/db/ports/net-mgmt_zabbix6-frontend/options
       owner: root
       group: wheel
 
-  - name: Install port zabbix54-frontend
+  - name: Install port zabbix6-frontend
     portinstall:
-      name: net-mgmt/zabbix54-frontend
+      name: net-mgmt/zabbix6-frontend
       use_packages: no
       state: present
 
@@ -112,31 +112,31 @@
 
   - name: Copy sample zabbix_agentd.conf
     copy:
-      src: conf/zabbix54_agentd.conf.sample
-      dest: /usr/local/etc/zabbix54/zabbix_agentd.conf
+      src: conf/zabbix6_agentd.conf.sample
+      dest: /usr/local/etc/zabbix6/zabbix_agentd.conf
       owner: root
       group: wheel
 
   - name: Copy sample zabbix_server.conf
     copy:
-      src: conf/zabbix54_server.conf.sample
-      dest: /usr/local/etc/zabbix54/zabbix_server.conf
+      src: conf/zabbix6_server.conf.sample
+      dest: /usr/local/etc/zabbix6/zabbix_server.conf
       owner: root
       group: wheel
 
   - name: Edit zabbix_agentd.conf Hostname=
     lineinfile:
-      path: /usr/local/etc/zabbix54/zabbix_agentd.conf
+      path: /usr/local/etc/zabbix6/zabbix_agentd.conf
       regexp: ^Hostname=.*
       line: Hostname={{ ansible_fqdn }}
 
   - name: Edit zabbix_agentd.conf Server=
     lineinfile:
-      path: /usr/local/etc/zabbix54/zabbix_agentd.conf
+      path: /usr/local/etc/zabbix6/zabbix_agentd.conf
       regexp: ^Server=.*
       line: Server={{ zabbix_server }}
 
-  - name: Start service zabbix54-agent, if not started
+  - name: Start service zabbix6-agent, if not started
     service:
       name: zabbix_agentd
       state: started
@@ -185,29 +185,29 @@
     postgresql_query:
       db: "{{ pgsql_zabbix_db }}"
       login_user: "{{ pgsql_zabbix_user }}"
-      path_to_script: /usr/local/share/zabbix54/server/database/postgresql/schema.sql
+      path_to_script: /usr/local/share/zabbix6/server/database/postgresql/schema.sql
 
   - name: Import Zabbix images.sql from SQL script
     postgresql_query:
       db: "{{ pgsql_zabbix_db }}"
       login_user: "{{ pgsql_zabbix_user }}"
-      path_to_script: /usr/local/share/zabbix54/server/database/postgresql/images.sql
+      path_to_script: /usr/local/share/zabbix6/server/database/postgresql/images.sql
 
   - name: Import Zabbix double.sql from SQL script
     postgresql_query:
       db: "{{ pgsql_zabbix_db }}"
       login_user: "{{ pgsql_zabbix_user }}"
-      path_to_script: /usr/local/share/zabbix54/server/database/postgresql/double.sql
+      path_to_script: /usr/local/share/zabbix6/server/database/postgresql/double.sql
 
 # Import failed row 27 :-(
 #  - name: Import Zabbix data.sql from SQL script
 #    postgresql_query:
 #      db: "{{ pgsql_zabbix_db }}"
 #      login_user: "{{ pgsql_zabbix_user }}"
-#      path_to_script: /usr/local/share/zabbix54/server/database/postgresql/data.sql
+#      path_to_script: /usr/local/share/zabbix6/server/database/postgresql/data.sql
 
   - name: Import Zabbix data.sql by shell
-    shell: psql "{{ pgsql_zabbix_db }}" < /usr/local/share/zabbix54/server/database/postgresql/data.sql
+    shell: psql "{{ pgsql_zabbix_db }}" < /usr/local/share/zabbix6/server/database/postgresql/data.sql
 
   - name: Install port timescaledb
     portinstall:
@@ -218,7 +218,7 @@
   - name: Config file templates/postgresql.conf
     template:
       src: "templates/postgresql.conf.j2"
-      dest: "/var/db/postgres/data14/postgresql.conf"
+      dest: "/var/db/postgres/data13/postgresql.conf"
       owner: postgres
       group: postgres
       mode: 0400
@@ -238,43 +238,43 @@
 #    postgresql_query:
 #      db: "{{ pgsql_zabbix_db }}"
 #      login_user: "{{ pgsql_zabbix_user }}"
-#      path_to_script: /usr/local/share/zabbix54/server/database/postgresql/timescaledb.sql
+#      path_to_script: /usr/local/share/zabbix6/server/database/postgresql/timescaledb.sql
 
   - name: Import Zabbix timescaledb.sql by shell
-    shell: psql "{{ pgsql_zabbix_db }}" < /usr/local/share/zabbix54/server/database/postgresql/timescaledb.sql
+    shell: psql "{{ pgsql_zabbix_db }}" < /usr/local/share/zabbix6/server/database/postgresql/timescaledb.sql
 
   - name: Edit zabbix_server.conf DBName=
     lineinfile:
-      path: /usr/local/etc/zabbix54/zabbix_server.conf
+      path: /usr/local/etc/zabbix6/zabbix_server.conf
       regexp: ^DBName=.*
       line: DBName={{ pgsql_zabbix_db }}
 
   - name: Edit zabbix_server.conf DBSchema=
     lineinfile:
-      path: /usr/local/etc/zabbix54/zabbix_server.conf
+      path: /usr/local/etc/zabbix6/zabbix_server.conf
       regexp: ^# DBSchema=.*
       line: DBSchema=public
 
   - name: Edit zabbix_server.conf DBUser=
     lineinfile:
-      path: /usr/local/etc/zabbix54/zabbix_server.conf
+      path: /usr/local/etc/zabbix6/zabbix_server.conf
       regexp: ^DBUser=.*
       line: DBUser={{ pgsql_zabbix_user }}
 
   - name: Edit zabbix_server.conf DBPassword=
     lineinfile:
-      path: /usr/local/etc/zabbix54/zabbix_server.conf
+      path: /usr/local/etc/zabbix6/zabbix_server.conf
       regexp: ^# DBPassword=.*
       line: DBPassword={{ pgsql_zabbix_password }}
 
-  - name: Start service zabbix54-server, if not started
+  - name: Start service zabbix6-server, if not started
     service:
       name: zabbix_server
       state: started
 
   - name: Copy zabbix.conf
     copy:
-      src: conf/zabbix54.conf
+      src: conf/zabbix6.conf
       dest: /usr/local/etc/apache24/Includes/zabbix.conf
       owner: root
       group: wheel
@@ -286,8 +286,8 @@
 
   - name: Config file zabbix.conf.php
     template:
-      src: "templates/zabbix54.conf.php.j2"
-      dest: "/usr/local/www/zabbix54/conf/zabbix.conf.php"
+      src: "templates/zabbix6.conf.php.j2"
+      dest: "/usr/local/www/zabbix6/conf/zabbix.conf.php"
       owner: www
       group: www
       mode: 0400
