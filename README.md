@@ -101,7 +101,6 @@ ansible-galaxy collection install -r requirements.yml
 ## Run Ansible playbook
 
 - choise version of zabbix
-- 3.6.2021 - zabbix54 does not exist in the binary version
 - ansible use module community.general.portinstall
 
 ```console
