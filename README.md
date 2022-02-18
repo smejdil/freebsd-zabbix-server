@@ -126,10 +126,12 @@ ansible-playbook playbooks/configure-zabbix.yml
 ## Postinstall upgrade package
 
 - Upgrade package from ports
+- curl - curl-7.81.0
 - apache24 - apache24-2.4.52 
 - php - php74-7.4.27
-- postgresql - postgresql14-server-13.5
-- ansible - py38-ansible-4.7.0
+- postgresql - postgresql14-server-13.6
+- ansible - py38-ansible-5.3.0
+- ansible-core - py38-ansible-core-2.12.2
 
 ```console
 portsnap fetch && portsnap update && pkg version -v | grep upd
