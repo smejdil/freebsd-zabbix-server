@@ -2,16 +2,16 @@
 
 This small project is used for install zabbix[5|6]_agent, zabbix[5|6]_frontend and
 zabbix[5|6]_server with mysql57-server or postgresql13-server with
-timescaledb-2.5.2 on OS FreeBSD 13.0-RELEASE-p7.
+timescaledb-2.5.2 on OS FreeBSD 13.1-RELEASE.
 
 ## Dependencies
 
 - Package zabbix - zabbix[5|6]-server
-- Packahe apache - apache24-2.4.52 - Version 2.4.x of Apache web server
-- Package php - php74-7.4.27 - PHP Scripting Language
+- Packahe apache - apache24-2.4.54 - Version 2.4.x of Apache web server
+- Package php - mod_php81-8.1.9 - PHP Scripting Language
 - Package mysql - mysql57-server-5.7.36 - Multithreaded SQL database (server)
-- Package postgresql - postgresql13-server-13.5 - PostgreSQL is the most advanced open-source database available anywhere
-- Package timescaledb - timescaledb-2.5.2 - Time-series database built on PostgreSQL
+- Package postgresql - postgresql14-server-14.4 - PostgreSQL is the most advanced open-source database available anywhere
+- Package timescaledb - timescaledb-2.8.0 - Time-series database built on PostgreSQL
 
 ## How it works
 
@@ -36,14 +36,14 @@ portsnap fetch && portsnap extract
 
 The Vagrantfile was initialized as follows.
 ```console
-vagrant init freebsd/FreeBSD-13.0-RELEASE
+vagrant init freebsd/FreeBSD-13.1-RELEASE
 ```
 
 ### Installation GCP test evnviroment FreeBSD
 
 ```console
 gcloud config set project zabbix-test
-gcloud compute instances create zabbix-server --image freebsd-13-0-release-amd64 --image-project=freebsd-org-cloud-dev --zone=europe-central2-a --metadata-from-file startup-script=./scripts/install-gcp.sh
+gcloud compute instances create zabbix-server --image freebsd-13-1-release-amd64 --image-project=freebsd-org-cloud-dev --zone=europe-central2-a --metadata-from-file startup-script=./scripts/install-gcp.sh
 gcloud compute instances add-tags zabbix-server --tags=http-server --zone=europe-central2-a
 gcloud compute ssh zabbix-server --zone=europe-central2-a
 ```
@@ -126,12 +126,12 @@ ansible-playbook playbooks/configure-zabbix.yml
 ## Postinstall upgrade package
 
 - Upgrade package from ports
-- curl - curl-7.81.0
+- curl - curl-7.82.0
 - apache24 - apache24-2.4.52 
 - php - php74-7.4.27
-- postgresql - postgresql14-server-13.6
-- ansible - py38-ansible-5.3.0
-- ansible-core - py38-ansible-core-2.12.2
+- postgresql - postgresql14-server-14.5
+- ansible - py39-ansible-5.5.0
+- ansible-core - py39-ansible-core-2.12.4
 
 ```console
 portsnap fetch && portsnap update && pkg version -v | grep upd
@@ -140,4 +140,4 @@ portupgrade -a
 
 ### ToDo
 
-- Fix problem with import data.sql and timescaledb.sql (py38-psycopg2) largre SQL
+- Fix problem with import data.sql and timescaledb.sql (py39-psycopg2) largre SQL

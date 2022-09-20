@@ -7,8 +7,8 @@ portsnap fetch && portsnap extract
 pkg install -y bash bash-completion
 
 # ansible
-pkg install -y py38-ansible python38 py38-setuptools
-ln -s /usr/local/bin/python3.8 /usr/bin/python
+pkg install -y py39-ansible python38 py39-setuptools
+ln -s /usr/local/bin/python3.9 /usr/bin/python
 
 # git
 pkg install -y git

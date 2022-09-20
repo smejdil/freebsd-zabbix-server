@@ -25,6 +25,6 @@ shared_preload_libraries: timescaledb
 
 # Package
 pkg_package: pkgconf, fping, autoconf, autoconf-wrapper, gmake, cmake, re2c, texinfo, m4, help2man, unixODBC, net-snmp, libevent, curl, perl5, portupgrade, libunwind, libedit, php74, openipmi, libtextstyle, gettext-tools, mpdecimal, ninja, nmap, libmodbus
-php_pkg_package: mod_php74, php74, php74-bcmath, php74-ctype, php74-dom, php74-fileinfo, php74-filter, php74-gd, php74-gettext, php74-json, php74-ldap, php74-mbstring, php74-openssl, php74-session, php74-simplexml, php74-snmp, php74-sockets, php74-xml, php74-xmlreader, php74-xmlwriter
+php_pkg_package: mod_php81, php81 , php81-bcmath, php81-ctype, php81-dom, php81-fileinfo, php81-filter, php81-gd, php81-gettext, php81-json, php81-ldap, php81-mbstring, php81-openssl, php81-session, php81-simplexml, php81-snmp, php81-sockets, php81-xml, php81-xmlreader, php81-xmlwriter
 
 # EOF
