@@ -1,8 +1,8 @@
 ## FreeBSD Zabbix Server
 
 This small project is used for install zabbix[5|6]_agent, zabbix[5|6]_frontend and
-zabbix[5|6]_server with mysql57-server or postgresql13-server with
-timescaledb-2.5.2 on OS FreeBSD 13.1-RELEASE.
+zabbix[5|6]_server with mysql57-server or postgresql14-server with
+timescaledb-2.8.0 on OS FreeBSD 13.1-RELEASE.
 
 ## Dependencies
 
@@ -16,7 +16,7 @@ timescaledb-2.5.2 on OS FreeBSD 13.1-RELEASE.
 ## How it works
 
 On Linux desktop run vagrant with vagrant-libvirt and vagrant-disksize. For test install and configure
-zabbix_server and other component by ansible on FreeBSD 13. Or use GCP.
+zabbix_server and other component by ansible on FreeBSD 13.1 Or use GCP.
 
 ### Installation Vagrant test evnviroment FreeBSD
 
@@ -128,7 +128,7 @@ ansible-playbook playbooks/configure-zabbix.yml
 - Upgrade package from ports
 - curl - curl-7.82.0
 - apache24 - apache24-2.4.52 
-- php - php74-7.4.27
+- php - php81-8.1.9
 - postgresql - postgresql14-server-14.5
 - ansible - py39-ansible-5.5.0
 - ansible-core - py39-ansible-core-2.12.4
