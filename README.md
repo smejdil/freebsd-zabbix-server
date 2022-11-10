@@ -1,7 +1,7 @@
 ## FreeBSD Zabbix Server
 
 This small project is used for install zabbix[5|6]_agent, zabbix[5|6]_frontend and
-zabbix[5|6]_server with mysql57-server or postgresql15-server with
+zabbix[5|6]_server with mysql57-server or postgresql14-server with
 timescaledb-2.8.1 on OS FreeBSD 13.1-RELEASE.
 
 ## Dependencies
@@ -10,7 +10,7 @@ timescaledb-2.8.1 on OS FreeBSD 13.1-RELEASE.
 - Packahe apache - apache24-2.4.54 - Version 2.4.x of Apache web server
 - Package php - mod_php81-8.1.9 - PHP Scripting Language
 - Package mysql - mysql57-server-5.7.36 - Multithreaded SQL database (server)
-- Package postgresql - postgresql15-server-15.0 - PostgreSQL is the most advanced open-source database available anywhere
+- Package postgresql - postgresql14-server-14.5 - PostgreSQL is the most advanced open-source database available anywhere
 - Package timescaledb - timescaledb-2.8.1 - Time-series database built on PostgreSQL
 
 ## How it works
@@ -129,7 +129,7 @@ ansible-playbook playbooks/configure-zabbix.yml
 - curl - curl-7.82.0
 - apache24 - apache24-2.4.52 
 - php - php81-8.1.9
-- postgresql - postgresql15-server-15.0
+- postgresql - postgresql14-server-14.5
 - ansible - py39-ansible-5.5.0
 - ansible-core - py39-ansible-core-2.12.4
 
