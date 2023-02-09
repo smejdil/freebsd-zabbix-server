@@ -1,17 +1,17 @@
 ## FreeBSD Zabbix Server
 
-This small project is used for install zabbix[5|6]_agent, zabbix[5|6]_frontend and
-zabbix[5|6]_server with mysql57-server or postgresql14-server with
-timescaledb-2.8.1 on OS FreeBSD 13.1-RELEASE.
+This small project is used for install zabbix6_agent, zabbix6_frontend and
+zabbix6_server with mysql57-server or postgresql15-server with
+timescaledb-2.9.2 on OS FreeBSD 13.1-RELEASE.
 
 ## Dependencies
 
-- Package zabbix - zabbix[5|6]-server
+- Package zabbix - zabbix6-server
 - Packahe apache - apache24-2.4.54 - Version 2.4.x of Apache web server
 - Package php - mod_php81-8.1.9 - PHP Scripting Language
 - Package mysql - mysql57-server-5.7.36 - Multithreaded SQL database (server)
-- Package postgresql - postgresql14-server-14.5 - PostgreSQL is the most advanced open-source database available anywhere
-- Package timescaledb - timescaledb-2.8.1 - Time-series database built on PostgreSQL
+- Package postgresql - postgresql14-server-15.1 - PostgreSQL is the most advanced open-source database available anywhere
+- Package timescaledb - timescaledb-2.9.2 - Time-series database built on PostgreSQL
 
 ## How it works
 
@@ -23,6 +23,7 @@ zabbix_server and other component by ansible on FreeBSD 13.1 Or use GCP.
 For ready function Vagrantfile is need use plugin vagrant-disksize
 
 ```console
+vagrant plugin install virtualbox
 vagrant plugin install vagrant-disksize
 ```
 Vagrant use Vagrantfile
@@ -77,7 +78,7 @@ ansible "*" -i "${VAGRANT_IP}," -u root -m ping
 sudo vim /etc/ansible/hosts
 
 [fbsd-zabbix-server]
-freebsd ansible_ssh_host=192.168.42.100 ansible_ssh_user=root ansible_python_interpreter=/usr/local/bin/python3.8
+freebsd ansible_ssh_host=192.168.42.100 ansible_ssh_user=root ansible_python_interpreter=/usr/local/bin/python3.9
 
 ansible fbsd-zabbix-server -m ping
 ```
@@ -95,7 +96,7 @@ Use Ansible community collection zabbix, general, mysql and postgresql. And pkgn
 ## Install Ansible module
 
 ```console
-ansible-galaxy collection install -r requirements.yml
+ansible-galaxy collection install community.zabbix
 ```
 
 ## Run Ansible playbook
@@ -127,9 +128,9 @@ ansible-playbook playbooks/configure-zabbix.yml
 
 - Upgrade package from ports
 - curl - curl-7.82.0
-- apache24 - apache24-2.4.52 
-- php - php81-8.1.9
-- postgresql - postgresql14-server-14.5
+- apache24 - apache24-2.4.55 
+- php - php81-8.1.13
+- postgresql - postgresql14-server-15.1
 - ansible - py39-ansible-5.5.0
 - ansible-core - py39-ansible-core-2.12.4
 

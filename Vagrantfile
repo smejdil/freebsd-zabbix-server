@@ -12,7 +12,7 @@ Vagrant.configure("2") do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
-  config.vm.box = "freebsd/FreeBSD-13.0-RELEASE"
+  config.vm.box = "freebsd/FreeBSD-13.1-RELEASE"
   config.disksize.size = '20GB'
 
   # Disable automatic box update checking. If you disable this, then
@@ -38,7 +38,7 @@ Vagrant.configure("2") do |config|
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
   # your network.
-  config.vm.network "public_network", bridge: "wlp2s0"
+  config.vm.network "public_network", bridge: "enp4s0"
 
   # Share an additional folder to the guest VM. The first argument is
   # the path on the host to the actual folder. The second argument is
@@ -50,13 +50,14 @@ Vagrant.configure("2") do |config|
   # backing providers for Vagrant. These expose provider-specific options.
   # Example for VirtualBox:
   #
-  # config.vm.provider "virtualbox" do |vb|
-  #   # Display the VirtualBox GUI when booting the machine
-  #   vb.gui = true
-  #
-  #   # Customize the amount of memory on the VM:
-  #   vb.memory = "1024"
-  # end
+
+  config.vm.provider "virtualbox" do |vb|
+  # Display the VirtualBox GUI when booting the machine
+     vb.gui = true
+  # Customize the amount of memory on the VM:
+     vb.memory = "1024"
+  end
+
   #
   # View the documentation for the provider you are using for more
   # information on available options.

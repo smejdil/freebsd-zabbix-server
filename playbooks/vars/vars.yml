@@ -24,7 +24,7 @@ pgsql_zabbix_db: zabbix
 shared_preload_libraries: timescaledb
 
 # Package
-pkg_package: pkgconf, fping, autoconf, gmake, cmake, re2c, texinfo, m4, help2man, unixODBC, net-snmp, libevent, curl, perl5, portupgrade, libunwind, libedit, php81, openipmi, libtextstyle, gettext-tools, mpdecimal, ninja, nmap, libmodbus
-php_pkg_package: mod_php81, php81 , php81-bcmath, php81-ctype, php81-dom, php81-fileinfo, php81-filter, php81-gd, php81-gettext, php81-ldap, php81-mbstring, php81-session, php81-simplexml, php81-snmp, php81-sockets, php81-xml, php81-xmlreader, php81-xmlwriter
+pkg_package: pkgconf, fping, autoconf, gmake, cmake, re2c, texinfo, m4, help2man, unixODBC, net-snmp, libevent, curl, perl5, portupgrade, libunwind, libedit, openipmi, libtextstyle, gettext-tools, mpdecimal, ninja, nmap, libmodbus
+php_pkg_package: mod_php81, php81, php81-bcmath, php81-ctype, php81-dom, php81-fileinfo, php81-filter, php81-gd, php81-gettext, php81-ldap, php81-mbstring, php81-session, php81-simplexml, php81-snmp, php81-sockets, php81-xml, php81-xmlreader, php81-xmlwriter
 
 # EOF
