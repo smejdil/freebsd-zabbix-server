@@ -27,9 +27,9 @@
       name: "{{ php_pkg_package }}"
       state: present      
 
-  - name: Install port php81-pgsql
+  - name: Install port php82-pgsql
     portinstall:
-      name: databases/php81-pgsql
+      name: databases/php82-pgsql
       state: present
 
   - name: Install package for easy compilation agent, server, frontend and timescaledb

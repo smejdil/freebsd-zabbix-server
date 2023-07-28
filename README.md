@@ -1,22 +1,22 @@
 ## FreeBSD Zabbix Server
 
 This small project is used for install zabbix6_agent, zabbix6_frontend and
-zabbix6_server with mysql57-server or postgresql15-server with
-timescaledb-2.9.2 on OS FreeBSD 13.1-RELEASE.
+zabbix6_server with mysql82-server or postgresql15-server with
+timescaledb-2.11.1 on OS FreeBSD 13.2-RELEASE.
 
 ## Dependencies
 
 - Package zabbix - zabbix6-server
-- Packahe apache - apache24-2.4.54 - Version 2.4.x of Apache web server
-- Package php - mod_php81-8.1.9 - PHP Scripting Language
-- Package mysql - mysql57-server-5.7.36 - Multithreaded SQL database (server)
-- Package postgresql - postgresql14-server-15.1 - PostgreSQL is the most advanced open-source database available anywhere
-- Package timescaledb - timescaledb-2.9.2 - Time-series database built on PostgreSQL
+- Packahe apache - apache24-2.4.57_1 - Version 2.4.x of Apache web server
+- Package php - mod_php82-8.2.8 - PHP Scripting Language
+- Package mysql - mysql80-server-8.0.33 - Multithreaded SQL database (server)
+- Package postgresql - postgresql15-server-15.3 - PostgreSQL is the most advanced open-source database available anywhere
+- Package timescaledb - timescaledb-2.11.1 - Time-series database built on PostgreSQL
 
 ## How it works
 
 On Linux desktop run vagrant with vagrant-libvirt and vagrant-disksize. For test install and configure
-zabbix_server and other component by ansible on FreeBSD 13.1 Or use GCP.
+zabbix_server and other component by ansible on FreeBSD 13.2 Or use GCP or BHyVe.
 
 ### Installation Vagrant test evnviroment FreeBSD
 
@@ -37,16 +37,47 @@ portsnap fetch && portsnap extract
 
 The Vagrantfile was initialized as follows.
 ```console
-vagrant init freebsd/FreeBSD-13.1-RELEASE
+vagrant init freebsd/FreeBSD-13.2-RELEASE
 ```
 
 ### Installation GCP test evnviroment FreeBSD
 
 ```console
 gcloud config set project zabbix-test
-gcloud compute instances create zabbix-server --image freebsd-13-1-release-amd64 --image-project=freebsd-org-cloud-dev --zone=europe-central2-a --metadata-from-file startup-script=./scripts/install-gcp.sh
+gcloud compute instances create zabbix-server --image freebsd-13-2-release-amd64 --image-project=freebsd-org-cloud-dev --zone=europe-central2-a --metadata-from-file startup-script=./scripts/install-gcp.sh
 gcloud compute instances add-tags zabbix-server --tags=http-server --zone=europe-central2-a
 gcloud compute ssh zabbix-server --zone=europe-central2-a
+```
+
+### Installation BHyVe test evnviroment FreeBSD
+
+```console
+vm image list -l | grep fbsd13
+78d9a3e4-2c58-11ee-9c8a-a08cfdf259ea  fbsd13      Thu Jul 27 10:34:59 CEST 2023  FreeBSD13-base-install
+
+vm image provision 78d9a3e4-2c58-11ee-9c8a-a08cfdf259ea freebsd
+Unpacking guest image, this may take some time...
+
+vm snapshot freebsd@2023072801
+
+vm start freebsd
+Starting freebsd
+  * found guest in /vms/freebsd
+  * booting...
+
+vm list | grep freebsd
+freebsd      default    bhyveload  2    2048M   -    No    Running (91460)
+
+vm console freebsd
+
+vm snapshot freebsd@2023072802
+
+zfs list -t snapshot
+NAME                                 USED  AVAIL     REFER  MOUNTPOINT
+zroot/vms/freebsd@2023072801          76K      -      124K  -
+zroot/vms/freebsd@2023072802          76K      -      124K  -
+zroot/vms/freebsd/disk0@2023072801  4.26M      -     6.54G  -
+zroot/vms/freebsd/disk0@2023072802  2.75M      -     6.54G  -
 ```
 
 ### Installation Desktop evnviroment
