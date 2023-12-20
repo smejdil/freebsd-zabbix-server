@@ -52,13 +52,13 @@ gcloud compute ssh zabbix-server --zone=europe-central2-a
 ### Installation BHyVe test evnviroment FreeBSD
 
 ```console
-vm image list -l | grep fbsd13
-78d9a3e4-2c58-11ee-9c8a-a08cfdf259ea  fbsd13      Thu Jul 27 10:34:59 CEST 2023  FreeBSD13-base-install
+vm image list -l | grep fbsd14
+3304b088-9b5b-11ee-9629-c87f54065582  fbsd14    Fri Dec 15 16:04:09 CET 2023 FreeBSD-14.0-RELEASE-p4-base-install
 
-vm image provision 78d9a3e4-2c58-11ee-9c8a-a08cfdf259ea freebsd
+vm image provision 3304b088-9b5b-11ee-9629-c87f54065582 freebsd
 Unpacking guest image, this may take some time...
 
-vm snapshot freebsd@2023072801
+vm snapshot freebsd@20231220
 
 vm start freebsd
 Starting freebsd
@@ -70,14 +70,13 @@ freebsd      default    bhyveload  2    2048M   -    No    Running (91460)
 
 vm console freebsd
 
-vm snapshot freebsd@2023072802
+vm snapshot freebsd@2023122001-base
 
-zfs list -t snapshot
-NAME                                 USED  AVAIL     REFER  MOUNTPOINT
-zroot/vms/freebsd@2023072801          76K      -      124K  -
-zroot/vms/freebsd@2023072802          76K      -      124K  -
-zroot/vms/freebsd/disk0@2023072801  4.26M      -     6.54G  -
-zroot/vms/freebsd/disk0@2023072802  2.75M      -     6.54G  -
+zfs list -t snapshot | grep freebsd
+zroot/vms/freebsd@20231123                 96K      -   112K  -
+zroot/vms/freebsd@2023122001-base          68K      -   116K  -
+zroot/vms/freebsd/disk0@20231123          456M      -  1.36G  -
+zroot/vms/freebsd/disk0@2023122001-base  1.95M      -  3.00G  -
 ```
 
 ### Installation Desktop evnviroment
